@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Matematika Kelas 5 SD/MI</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 50%, #fdf4ff 100%);
+            min-height: 100vh;
+        }
+        .heading-font {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col min-h-screen justify-between selection:bg-indigo-200">
+
+    <div id="app" class="flex-grow flex flex-col items-center justify-center p-4 max-w-4xl mx-auto w-full">
+        <!-- Dynamic Views Render Here -->
+    </div>
+
+    <!-- Developer Footer Watermark (Mandatory rule 8) -->
+    <footer class="py-3 text-center text-xs text-slate-500 border-t border-slate-200 bg-white/70 backdrop-blur-sm">
+        Pengembang: Giga Inovation | 081329200985
+    </footer>
+
+    <script>
+        const APP_STATE = {
+            step: 1, // 1: Landing, 2: Name Input, 3: Greeting, 4: Instructions, 5: Materials Hub, 6: Ready Quiz, 7: Quiz, 8: Results, 9: Certificate
+            studentName: '',
+            currentQuestionIndex: 0,
+            score: 0,
+            correctCount: 0,
+            wrongCount: 0,
+            answers: {}, // index -> chosen option
+            fromQuizToMaterial: false
+        };
+
+        // 50 Comprehensive Mathematics Class 5 Questions across Bab 1 to Bab 6
+        const QUIZ_QUESTIONS = [
+            // --- BAB 1: BILANGAN CACAH SAMPAI 100.000 (Soal 1 - 8) ---
+            {
+                bab: "Bab 1: Bilangan Cacah sampai 100.000",
+                question: "Lambang bilangan dari 'Empat puluh lima ribu tiga ratus dua puluh tujuh' adalah...",
+                options: ["A. 45.327", "B. 45.237", "C. 54.327", "D. 4.537"],
+                answer: 0,
+                explanation: "Empat puluh lima ribu ditulis 45.000, tiga ratus ditulis 300, dua puluh tujuh ditulis 27. Jadi digabung menjadi 45.327."
+            },
+            {
+                bab: "Bab 1: Bilangan Cacah sampai 100.000",
+                question: "Pada bilangan 78.415, angka 8 menempati nilai tempat...",
+                options: ["A. Ratusan", "B. Ribuan", "C. Puluh ribuan", "D. Puluhan"],
+                answer: 1,
+                explanation: "Nilai tempat dari kanan ke kiri: 5 (satuan), 1 (puluhan), 4 (ratusan), 8 (ribuan), 7 (puluh ribuan). Jadi angka 8 menempati ribuan (8.000)."
+            },
+            {
+                bab: "Bab 1: Bilangan Cacah sampai 100.000",
+                question: "Bentuk dekomposisi (penjumlahan nilai tempat) dari 62.940 adalah...",
+                options: [
+                    "A. 60.000 + 2.000 + 900 + 40",
+                    "B. 6.000 + 200 + 90 + 4",
+                    "C. 60.000 + 20.000 + 900 + 40",
+                    "D. 60.000 + 2.000 + 90 + 4"
+                ],
+                answer: 0,
+                explanation: "62.940 diurai berdasarkan nilai tempatnya menjadi 60.000 + 2.000 + 900 + 40."
+            },
+            {
+                bab: "Bab 1: Bilangan Cacah sampai 100.000",
+                question: "Tanda perbandingan yang tepat untuk mengisi titik-titik pada: 48.250 ... 48.520 adalah...",
+                options: ["A. > (lebih besar)", "B. < (lebih kecil)", "C. = (sama dengan)", "D. +"],
+                answer: 1,
+                explanation: "Bilangan 48.250 lebih kecil daripada 48.520, karena angka ratusannya 2 lebih kecil dari 5. Jadi tanda yang tepat adalah <."
+            },
+            {
+                bab: "Bab 1: Bilangan Cacah sampai 100.000",
+                question: "Urutan bilangan berikut dari yang terkecil ke terbesar: 34.200, 32.400, 34.020, 32.040 adalah...",
+                options: [
+                    "A. 32.040, 32.400, 34.020, 34.200",
+                    "B. 32.400, 32.040, 34.200, 34.020",
+                    "C. 34.200, 34.020, 32.400, 32.040",
+                    "D. 32.040, 34.020, 32.400, 34.200"
+                ],
+                answer: 0,
+                explanation: "Urutan dari yang terkecil adalah 32.040, 32.400, 34.020, 34.200."
+            },
+            {
+                bab: "Bab 1: Bilangan Cacah sampai 100.000",
+                question: "Komposisi dari 70.000 + 5.000 + 300 + 8 adalah...",
+                options: ["A. 75.380", "B. 75.308", "C. 70.538", "D. 75.830"],
+                answer: 1,
+                explanation: "70.000 + 5.000 + 300 + 8 jika disusun menjadi 75.308 (perhatikan nilai puluhan bernilai 0)."
+            },
+            {
+                bab: "Bab 1: Bilangan Cacah sampai 100.000",
+                question: "Manakah pernyataan yang benar mengenai bilangan 59.832?",
+                options: [
+                    "A. Angka 9 menempati puluhan ribu",
+                    "B. Angka 8 menempati ratusan",
+                    "C. Angka 5 menempati satuan",
+                    "D. Angka 2 menempati puluhan"
+                ],
+                answer: 1,
+                explanation: "Pada 59.832, angka 8 berada di tempat ratusan (800). Angka 5 di puluh ribuan."
+            },
+            {
+                bab: "Bab 1: Bilangan Cacah sampai 100.000",
+                question: "Bilangan yang terletak di antara 42.100 dan 42.103 adalah...",
+                options: ["A. 42.099", "B. 42.101 dan 42.102", "C. 42.104", "D. 42.105"],
+                answer: 1,
+                explanation: "Antara 42.100 dan 42.103 adalah 42.101 dan 42.102."
+            },
+
+            // --- BAB 2: OPERASI HITUNG BILANGAN CACAH SAMPAI 100.000 (Soal 9 - 16) ---
+            {
+                bab: "Bab 2: Operasi Hitung Bilangan Cacah",
+                question: "Hasil dari 34.500 + 18.250 adalah...",
+                options: ["A. 52.750", "B. 52.650", "C. 53.750", "D. 51.750"],
+                answer: 0,
+                explanation: "34.500 + 18.250 = 52.750."
+            },
+            {
+                bab: "Bab 2: Operasi Hitung Bilangan Cacah",
+                question: "Hasil dari 75.000 - 24.600 adalah...",
+                options: ["A. 50.400", "B. 51.400", "C. 49.400", "D. 50.600"],
+                answer: 0,
+                explanation: "75.000 - 24.600 = 50.400."
+            },
+            {
+                bab: "Bab 2: Operasi Hitung Bilangan Cacah",
+                question: "Hasil dari 235 × 24 adalah...",
+                options: ["A. 5.640", "B. 5.460", "C. 4.640", "D. 6.540"],
+                answer: 0,
+                explanation: "235 × 24 = (235 × 20) + (235 × 4) = 4.700 + 940 = 5.640."
+            },
+            {
+                bab: "Bab 2: Operasi Hitung Bilangan Cacah",
+                question: "Hasil dari 4.320 ÷ 12 adalah...",
+                options: ["A. 360", "B. 350", "C. 380", "D. 340"],
+                answer: 0,
+                explanation: "4.320 ÷ 12 = 360 (karena 360 × 12 = 4.320)."
+            },
+            {
+                bab: "Bab 2: Operasi Hitung Bilangan Cacah",
+                question: "Ibu membeli 8 kotak pensil. Setiap kotak berisi 36 pensil. Pensil tersebut dibagikan kepada 12 anak secara merata. Berapa pensil yang diterima setiap anak?",
+                options: ["A. 24 pensil", "B. 18 pensil", "C. 32 pensil", "D. 20 pensil"],
+                answer: 0,
+                explanation: "Total pensil = 8 × 36 = 288 pensil. Dibagikan ke 12 anak = 288 ÷ 12 = 24 pensil."
+            },
+            {
+                bab: "Bab 2: Operasi Hitung Bilangan Cacah",
+                question: "Hasil dari 12.500 + 4.000 × 5 adalah...",
+                options: ["A. 82.500", "B. 32.500", "C. 20.500", "D. 28.500"],
+                answer: 1,
+                explanation: "Dahulukan perkalian: 4.000 × 5 = 20.000. Kemudian penjumlahan: 12.500 + 20.000 = 32.500."
+            },
+            {
+                bab: "Bab 2: Operasi Hitung Bilangan Cacah",
+                question: "Sebuah gudang memiliki 4.500 kg beras. Beras tersebut dikirim ke 15 toko sama banyak. Jika setiap toko sudah menjual 200 kg, berapa sisa beras di setiap toko?",
+                options: ["A. 100 kg", "B. 150 kg", "C. 80 kg", "D. 120 kg"],
+                answer: 0,
+                explanation: "Beras per toko = 4.500 ÷ 15 = 300 kg. Sisa beras setelah dijual 200 kg = 300 - 200 = 100 kg."
+            },
+            {
+                bab: "Bab 2: Operasi Hitung Bilangan Cacah",
+                question: "Hasil dari (50.000 - 15.000) ÷ 7 adalah...",
+                options: ["A. 5.000", "B. 7.000", "C. 6.000", "D. 4.000"],
+                answer: 0,
+                explanation: "Hitung dalam kurung: 50.000 - 15.000 = 35.000. Lalu bagi 7: 35.000 ÷ 7 = 5.000."
+            },
+
+            // --- BAB 3: KPK DAN FPB (Soal 17 - 25) ---
+            {
+                bab: "Bab 3: KPK dan FPB",
+                question: "Faktor dari bilangan 24 adalah...",
+                options: [
+                    "A. 1, 2, 3, 4, 6, 8, 12, 24",
+                    "B. 1, 2, 3, 4, 6, 12",
+                    "C. 2, 4, 6, 8, 12, 24",
+                    "D. 1, 3, 5, 8, 12, 24"
+                ],
+                answer: 0,
+                explanation: "Faktor 24 adalah bilangan yang habis membagi 24 yaitu 1, 2, 3, 4, 6, 8, 12, dan 24."
+            },
+            {
+                bab: "Bab 3: KPK dan FPB",
+                question: "Kelipatan persekutuan dari 4 dan 6 yang kurang dari 30 adalah...",
+                options: [
+                    "A. 12, 24",
+                    "B. 6, 12, 18, 24",
+                    "C. 4, 8, 12, 16, 20, 24, 28",
+                    "D. 12, 18, 24"
+                ],
+                answer: 0,
+                explanation: "Kelipatan 4: 4, 8, 12, 16, 20, 24, 28... Kelipatan 6: 6, 12, 18, 24, 30... Kelipatan persekutuan yang < 30 adalah 12 dan 24."
+            },
+            {
+                bab: "Bab 3: KPK dan FPB",
+                question: "KPK dari 12 dan 15 adalah...",
+                options: ["A. 60", "B. 30", "C. 45", "D. 90"],
+                answer: 0,
+                explanation: "Kelipatan 12: 12, 24, 36, 48, 60. Kelipatan 15: 15, 30, 45, 60. Kelipatan sekutu terkecil adalah 60."
+            },
+            {
+                bab: "Bab 3: KPK dan FPB",
+                question: "FPB dari 36 dan 48 adalah...",
+                options: ["A. 12", "B. 6", "C. 18", "D. 24"],
+                answer: 0,
+                explanation: "Faktor 36: 1, 2, 3, 4, 6, 9, 12, 18, 36. Faktor 48: 1, 2, 3, 4, 6, 8, 12, 16, 24, 48. FPB terbesar adalah 12."
+            },
+            {
+                bab: "Bab 3: KPK dan FPB",
+                question: "Lampu A menyala setiap 4 menit sekali, dan lampu B menyala setiap 6 menit sekali. Jika kedua lampu menyala bersamaan pada pukul 08.00, mereka akan menyala bersamaan lagi pada pukul...",
+                options: ["A. 08.12", "B. 08.10", "C. 08.24", "D. 08.30"],
+                answer: 0,
+                explanation: "KPK dari 4 dan 6 adalah 12 menit. 08.00 + 12 menit = 08.12."
+            },
+            {
+                bab: "Bab 3: KPK dan FPB",
+                question: "Ibu memiliki 42 buah mangga dan 56 buah jeruk. Buah tersebut akan dimasukkan ke dalam keranjang dengan jumlah masing-masing jenis sama banyak. Berapa jumlah keranjang terbanyak yang dibutuhkan ibu?",
+                options: ["A. 14 keranjang", "B. 7 keranjang", "C. 6 keranjang", "D. 21 keranjang"],
+                answer: 0,
+                explanation: "Keranjang terbanyak menggunakan FPB dari 42 dan 56, yaitu 14."
+            },
+            {
+                bab: "Bab 3: KPK dan FPB",
+                question: "Bentuk faktorisasi prima dari 72 adalah...",
+                options: [
+                    "A. 2³ × 3²",
+                    "B. 2² × 3³",
+                    "C. 2³ × 3³",
+                    "D. 2⁴ × 3"
+                ],
+                answer: 0,
+                explanation: "72 = 8 × 9 = 2³ × 3²."
+            },
+            {
+                bab: "Bab 3: KPK dan FPB",
+                question: "KPK dari 15, 20, dan 30 adalah...",
+                options: ["A. 60", "B. 90", "C. 120", "D. 30"],
+                answer: 0,
+                explanation: "Kelipatan persekutuan terkecil dari 15, 20, dan 30 adalah 60."
+            },
+
+            // --- BAB 4: PECAHAN (Soal 26 - 34) ---
+            {
+                bab: "Bab 4: Pecahan",
+                question: "Bentuk pecahan biasa dari pecahan campuran $3\\frac{2}{5}$ adalah...",
+                options: ["A. $\\frac{17}{5}$", "B. $\\frac{16}{5}$", "C. $\\frac{13}{5}$", "D. $\\frac{18}{5}$"],
+                answer: 0,
+                explanation: "$3\\frac{2}{5} = \\frac{(3 \\times 5) + 2}{5} = \\frac{17}{5}$."
+            },
+            {
+                bab: "Bab 4: Pecahan",
+                question: "Pecahan campuran dari $\\frac{22}{4}$ setelah disederhanakan adalah...",
+                options: ["A. $5\\frac{1}{2}$", "B. $5\\frac{1}{4}$", "C. $4\\frac{1}{2}$", "D. $5\\frac{3}{4}$"],
+                answer: 0,
+                explanation: "22 ÷ 4 = 5 sisa 2, jadi $5\\frac{2}{4}$. Dihilangkan pecahannya menjadi $5\\frac{1}{2}$."
+            },
+            {
+                bab: "Bab 4: Pecahan",
+                question: "Tanda yang tepat untuk membandingkan pecahan: $\\frac{3}{4}$ ... $\\frac{2}{3}$ adalah...",
+                options: ["A. >", "B. <", "C. =", "D. +"],
+                answer: 0,
+                explanation: "Samakan penyebut jadi 12: $\\frac{3}{4} = \\frac{9}{12}$ dan $\\frac{2}{3} = \\frac{8}{12}$. Karena $\\frac{9}{12} > \\frac{8}{12}$, maka $\\frac{3}{4} > \\frac{2}{3}$."
+            },
+            {
+                bab: "Bab 4: Pecahan",
+                question: "Hasil dari $\\frac{2}{3} + \\frac{1}{4}$ adalah...",
+                options: ["A. $\\frac{11}{12}$", "B. $\\frac{3}{7}$", "C. $\\frac{5}{12}$", "D. $\\frac{7}{12}$"],
+                answer: 0,
+                explanation: "Samakan penyebut KPK 3 dan 4 adalah 12. $\\frac{8}{12} + \\frac{3}{12} = \\frac{11}{12}$."
+            },
+            {
+                bab: "Bab 4: Pecahan",
+                question: "Hasil dari $\\frac{4}{5} - \\frac{1}{2}$ adalah...",
+                options: ["A. $\\frac{3}{10}$", "B. $\\frac{3}{3}$", "C. $\\frac{1}{10}$", "D. $\\frac{2}{5}$"],
+                answer: 0,
+                explanation: "Penyebut KPK 5 dan 2 adalah 10. $\\frac{8}{10} - \\frac{5}{10} = \\frac{3}{10}$."
+            },
+            {
+                bab: "Bab 4: Pecahan",
+                question: "Urutan pecahan dari yang terkecil ke terbesar: $\\frac{1}{2}$, $\\frac{3}{4}$, $\\frac{3}{8}$ adalah...",
+                options: [
+                    "A. $\\frac{3}{8}$, $\\frac{1}{2}$, $\\frac{3}{4}$",
+                    "B. $\\frac{1}{2}$, $\\frac{3}{8}$, $\\frac{3}{4}$",
+                    "C. $\\frac{3}{4}$, $\\frac{1}{2}$, $\\frac{3}{8}$",
+                    "D. $\\frac{3}{8}$, $\\frac{3}{4}$, $\\frac{1}{2}$"
+                ],
+                answer: 0,
+                explanation: "Ubah ke penyebut 8: $\\frac{4}{8}$, $\\frac{6}{8}$, $\\frac{3}{8}$. Urutan terkecil ke terbesar: $\\frac{3}{8}, \\frac{4}{8}, \\frac{6}{8}$ yaitu $\\frac{3}{8}, \\frac{1}{2}, \\frac{3}{4}$."
+            },
+            {
+                bab: "Bab 4: Pecahan",
+                question: "Ibu memiliki $\\frac{3}{4}$ kg gula. Digunakan untuk membuat kue $\\frac{1}{2}$ kg. Berapa kg sisa gula ibu?",
+                options: ["A. $\\frac{1}{4}$ kg", "B. $\\frac{2}{4}$ kg", "C. $\\frac{1}{2}$ kg", "D. $\\frac{1}{8}$ kg"],
+                answer: 0,
+                explanation: "$\\frac{3}{4} - \\frac{1}{2} = \\frac{3}{4} - \\frac{2}{4} = \\frac{1}{4}$ kg."
+            },
+            {
+                bab: "Bab 4: Pecahan",
+                question: "Hasil dari $2\\frac{1}{3} + 1\\frac{1}{6}$ adalah...",
+                options: ["A. $3\\frac{1}{2}$", "B. $3\\frac{2}{9}$", "C. $3\\frac{1}{3}$", "D. $2\\frac{1}{2}$"],
+                answer: 0,
+                explanation: "Jumlahkan bilangan bulat (2 + 1 = 3). Pecahan: $\\frac{1}{3} + \\frac{1}{6} = \\frac{2}{6} + \\frac{1}{6} = \\frac{3}{6} = \\frac{1}{2}$. Jadi $3\\frac{1}{2}$."
+            },
+
+            // --- BAB 5: KELILING BANGUN DATAR (Soal 35 - 42) ---
+            {
+                bab: "Bab 5: Keliling Bangun Datar",
+                question: "Keliling sebuah persegi yang memiliki panjang sisi 25 cm adalah...",
+                options: ["A. 100 cm", "B. 50 cm", "C. 75 cm", "D. 625 cm"],
+                answer: 0,
+                explanation: "Keliling persegi = 4 × sisi = 4 × 25 = 100 cm."
+            },
+            {
+                bab: "Bab 5: Keliling Bangun Datar",
+                question: "Sebuah persegi panjang memiliki panjang 32 cm dan lebar 18 cm. Keliling persegi panjang tersebut adalah...",
+                options: ["A. 100 cm", "B. 50 cm", "C. 90 cm", "D. 576 cm"],
+                answer: 0,
+                explanation: "Keliling = 2 × (panjang + lebar) = 2 × (32 + 18) = 2 × 50 = 100 cm."
+            },
+            {
+                bab: "Bab 5: Keliling Bangun Datar",
+                question: "Sebuah segitiga sama sisi memiliki panjang sisi 16 cm. Keliling segitiga tersebut adalah...",
+                options: ["A. 48 cm", "B. 32 cm", "C. 64 cm", "D. 24 cm"],
+                answer: 0,
+                explanation: "Keliling segitiga sama sisi = 3 × sisi = 3 × 16 = 48 cm."
+            },
+            {
+                bab: "Bab 5: Keliling Bangun Datar",
+                question: "Ayah ingin membuat pagar di sekeliling kebun berbentuk persegi panjang dengan panjang 15 meter dan lebar 10 meter. Berapa meter panjang pagar yang dibutuhkan?",
+                options: ["A. 50 meter", "B. 25 meter", "C. 150 meter", "D. 40 meter"],
+                answer: 0,
+                explanation: "Panjang pagar = keliling kebun = 2 × (15 + 10) = 2 × 25 = 50 meter."
+            },
+            {
+                bab: "Bab 5: Keliling Bangun Datar",
+                question: "Sebuah lapangan berbentuk persegi memiliki keliling 120 cm. Panjang sisi lapangan tersebut adalah...",
+                options: ["A. 30 cm", "B. 40 cm", "C. 20 cm", "D. 60 cm"],
+                answer: 0,
+                explanation: "Sisi = Keliling ÷ 4 = 120 ÷ 4 = 30 cm."
+            },
+            {
+                bab: "Bab 5: Keliling Bangun Datar",
+                question: "Segitiga sembarang memiliki sisi-sisi sepanjang 12 cm, 15 cm, dan 18 cm. Keliling segitiga tersebut adalah...",
+                options: ["A. 45 cm", "B. 40 cm", "C. 50 cm", "D. 42 cm"],
+                answer: 0,
+                explanation: "Keliling = sisi 1 + sisi 2 + sisi 3 = 12 + 15 + 18 = 45 cm."
+            },
+            {
+                bab: "Bab 5: Keliling Bangun Datar",
+                question: "Sebuah taman berbentuk gabungan persegi dan persegi panjang. Jika keliling luar bangun tersebut dihitung dari semua sisi tepinya yang berukuran 10m, 8m, 10m, 8m, dan 12m, berapa keliling totalnya?",
+                options: ["A. 48 meter", "B. 40 meter", "C. 38 meter", "D. 52 meter"],
+                answer: 0,
+                explanation: "Keliling bangun gabungan adalah jumlah seluruh sisi luarnya = 10 + 8 + 10 + 8 + 12 = 48 meter."
+            },
+            {
+                bab: "Bab 5: Keliling Bangun Datar",
+                question: "Jika keliling persegi panjang adalah 72 cm dan lebarnya 12 cm, berapa panjang persegi panjang tersebut?",
+                options: ["A. 24 cm", "B. 36 cm", "C. 18 cm", "D. 30 cm"],
+                answer: 0,
+                explanation: "Keliling = 2 × (p + l) ⇒ 72 = 2 × (p + 12) ⇒ p + 12 = 36 ⇒ p = 24 cm."
+            },
+
+            // --- BAB 6: LUAS BANGUN DATAR (Soal 43 - 50) ---
+            {
+                bab: "Bab 6: Luas Bangun Datar",
+                question: "Luas sebuah persegi yang memiliki panjang sisi 18 cm adalah...",
+                options: ["A. 324 cm²", "B. 72 cm²", "C. 36 cm²", "D. 284 cm²"],
+                answer: 0,
+                explanation: "Luas persegi = sisi × sisi = 18 × 18 = 324 cm²."
+            },
+            {
+                bab: "Bab 6: Luas Bangun Datar",
+                question: "Sebuah lapangan berbentuk persegi panjang memiliki panjang 30 meter dan lebar 15 meter. Luas lapangan tersebut adalah...",
+                options: ["A. 450 m²", "B. 90 m²", "C. 300 m²", "D. 400 m²"],
+                answer: 0,
+                explanation: "Luas = panjang × lebar = 30 × 15 = 450 m²."
+            },
+            {
+                bab: "Bab 6: Luas Bangun Datar",
+                question: "Luas segitiga yang memiliki alas 24 cm dan tinggi 10 cm adalah...",
+                options: ["A. 120 cm²", "B. 240 cm²", "C. 60 cm²", "D. 140 cm²"],
+                answer: 0,
+                explanation: "Luas segitiga = $\\frac{1}{2} \\times \\text{alas} \\times \\text{tinggi} = \\frac{1}{2} \\times 24 \\times 10 = 120 \\text{ cm}^2$."
+            },
+            {
+                bab: "Bab 6: Luas Bangun Datar",
+                question: "Sebuah lantai berbentuk persegi dengan panjang sisi 6 meter. Lantai tersebut akan dipasang ubin berbentuk persegi dengan sisi 30 cm. Berapa banyak ubin yang dibutuhkan?",
+                options: ["A. 400 ubin", "B. 200 ubin", "C. 600 ubin", "D. 300 ubin"],
+                answer: 0,
+                explanation: "Luas lantai = 600 cm × 600 cm = 360.000 cm². Luas ubin = 30 × 30 = 900 cm². Banyak ubin = 360.000 ÷ 900 = 400 ubin."
+            },
+            {
+                bab: "Bab 6: Luas Bangun Datar",
+                question: "Jika luas persegi panjang adalah 280 cm² dan panjangnya 20 cm, berapa lebar persegi panjang tersebut?",
+                options: ["A. 14 cm", "B. 12 cm", "C. 16 cm", "D. 15 cm"],
+                answer: 0,
+                explanation: "Lebar = Luas ÷ panjang = 280 ÷ 20 = 14 cm."
+            },
+            {
+                bab: "Bab 6: Luas Bangun Datar",
+                question: "Sebuah bangun gabungan terdiri dari persegi panjang (panjang 12 cm, lebar 8 cm) dan segitiga di atasnya dengan alas 12 cm dan tinggi 5 cm. Berapa luas total bangun gabungan tersebut?",
+                options: ["A. 126 cm²", "B. 116 cm²", "C. 136 cm²", "D. 96 cm²"],
+                answer: 0,
+                explanation: "Luas persegi panjang = 12 × 8 = 96 cm². Luas segitiga = $\\frac{1}{2} \\times 12 \\times 5 = 30 \\text{ cm}^2$. Luas total = 96 + 30 = 126 cm²."
+            },
+            {
+                bab: "Bab 6: Luas Bangun Datar",
+                question: "Sebuah kebun berbentuk segitiga memiliki luas 180 m². Jika panjang alasnya 20 meter, berapa tinggi kebun tersebut?",
+                options: ["A. 18 meter", "B. 9 meter", "C. 36 meter", "D. 20 meter"],
+                answer: 0,
+                explanation: "Luas = $\\frac{1}{2} \\times a \\times t \\Rightarrow 180 = \\frac{1}{2} \\times 20 \\times t \\Rightarrow 180 = 10 \\times t \\Rightarrow t = 18$ meter."
+            },
+            {
+                bab: "Bab 6: Luas Bangun Datar",
+                question: "Berapakah luas sebidang tanah berbentuk persegi dengan keliling 80 meter?",
+                options: ["A. 400 m²", "B. 640 m²", "C. 160 m²", "D. 200 m²"],
+                answer: 0,
+                explanation: "Sisi = 80 ÷ 4 = 20 meter. Luas = 20 × 20 = 400 m²."
+            }
+        ];
+
+        // Text to Speech Wrapper for Indonesian
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'id-ID';
+                utterance.rate = 0.95;
+                utterance.pitch = 1.05;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function render() {
+            const app = document.getElementById('app');
+            app.innerHTML = '';
+
+            if (APP_STATE.step === 1) {
+                renderLandingPage(app);
+            } else if (APP_STATE.step === 2) {
+                renderNameInputPage(app);
+            } else if (APP_STATE.step === 3) {
+                renderGreetingPage(app);
+            } else if (APP_STATE.step === 4) {
+                renderInstructionPage(app);
+            } else if (APP_STATE.step === 5) {
+                renderMaterialsHub(app);
+            } else if (APP_STATE.step === 6) {
+                renderReadyQuizPage(app);
+            } else if (APP_STATE.step === 7) {
+                renderQuizPage(app);
+            } else if (APP_STATE.step === 8) {
+                renderResultsPage(app);
+            } else if (APP_STATE.step === 9) {
+                renderCertificatePage(app);
+            }
+        }
+
+        // 1. Landing Page
+        function renderLandingPage(container) {
+            container.innerHTML = `
+                <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 max-w-xl w-full text-center border border-indigo-100 my-auto">
+                    <div class="flex justify-center gap-3 mb-6 text-indigo-600">
+                        <span class="p-3 bg-indigo-50 rounded-2xl text-2xl animate-bounce"><i class="fa-solid fa-calculator"></i></span>
+                        <span class="p-3 bg-emerald-50 rounded-2xl text-2xl animate-bounce" style="animation-delay: 0.2s;"><i class="fa-solid fa-shapes"></i></span>
+                        <span class="p-3 bg-amber-50 rounded-2xl text-2xl animate-bounce" style="animation-delay: 0.4s;"><i class="fa-solid fa-percent"></i></span>
+                    </div>
+                    <h1 class="heading-font text-3xl md:text-4xl font-black text-slate-900 mb-2">PETUALANGAN MATEMATIKA</h1>
+                    <p class="text-indigo-600 font-bold text-lg mb-6">Matematika Kelas 5 SD/MI</p>
+                    <p class="text-slate-600 text-sm mb-8 leading-relaxed">
+                        Jelajahi dunia angka, pecahan, bangun datar, KPK, FPB, hingga luas keliling dengan cara yang seru, interaktif, dan menyenangkan!
+                    </p>
+                    <button onclick="goToNameInput()" class="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold rounded-2xl shadow-xl hover:from-indigo-700 hover:to-blue-700 transition transform hover:-translate-y-0.5 text-lg flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-user-plus"></i> MASUKKAN NAMA KAMU
+                    </button>
+                </div>
+            `;
+        }
+
+        function goToNameInput() {
+            APP_STATE.step = 2;
+            render();
+        }
+
+        // 2. Name Input Page
+        function renderNameInputPage(container) {
+            container.innerHTML = `
+                <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 max-w-md w-full text-center border border-indigo-100 my-auto">
+                    <div class="inline-block p-4 bg-indigo-100 text-indigo-600 rounded-full mb-4 shadow-inner">
+                        <i class="fa-solid fa-user-graduate text-3xl"></i>
+                    </div>
+                    <h2 class="heading-font text-2xl font-bold text-slate-800 mb-2">Siapa Nama Kamu?</h2>
+                    <p class="text-slate-600 text-sm mb-6">Masukkan nama lengkap atau nama panggilanmu untuk memulai petualangan matematika.</p>
+                    
+                    <form onsubmit="handleNameSubmit(event)" class="space-y-4">
+                        <div>
+                            <input type="text" id="studentNameInput" required placeholder="Contoh: Andi Pratama" value="${APP_STATE.studentName}"
+                                class="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:border-indigo-500 focus:outline-none text-center text-lg font-bold text-slate-700 placeholder:font-normal placeholder:text-slate-400">
+                        </div>
+                        <button type="submit" class="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold rounded-2xl shadow-lg hover:from-indigo-700 hover:to-blue-700 transition text-base flex items-center justify-center gap-2">
+                            <span>Lanjut Masuk</span> <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
+            `;
+        }
+
+        function handleNameSubmit(event) {
+            event.preventDefault();
+            const nameVal = document.getElementById('studentNameInput').value.trim();
+            if (nameVal) {
+                APP_STATE.studentName = nameVal;
+                APP_STATE.step = 3;
+                render();
+                speakText(`Halo, ${APP_STATE.studentName}! Selamat datang di Petualangan Matematika Kelas 5.`);
+            }
+        }
+
+        // 3. Greeting Page
+        function renderGreetingPage(container) {
+            container.innerHTML = `
+                <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 max-w-lg w-full text-center border border-indigo-100 my-auto animate-fadeIn">
+                    <div class="inline-block p-4 bg-emerald-100 text-emerald-600 rounded-full mb-4">
+                        <i class="fa-solid fa-hand-sparkles text-4xl"></i>
+                    </div>
+                    <h2 class="heading-font text-3xl font-extrabold text-slate-800 mb-1">Halo, ${APP_STATE.studentName}! 👋</h2>
+                    <p class="text-indigo-600 font-bold mb-6">Selamat datang di Petualangan Matematika.</p>
+                    
+                    <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-5 text-left mb-6 space-y-2 text-sm text-slate-700">
+                        <p class="font-bold text-indigo-900 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info text-indigo-600"></i> Cara Bermain:
+                        </p>
+                        <p>1. Pelajari materi dari Bab 1 sampai Bab 6 terlebih dahulu.</p>
+                        <p>2. Kerjakan 50 soal latihan dengan teliti (skor maksimal 1.000).</p>
+                        <p>3. Kamu bisa membuka kembali materi kapan saja saat kuis berlangsung tanpa kehilangan progres!</p>
+                    </div>
+
+                    <button onclick="goToInstructions()" class="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold rounded-2xl shadow-lg hover:from-indigo-700 hover:to-blue-700 transition text-lg flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-compass"></i> LANJUT KE PETUNJUK
+                    </button>
+                </div>
+            `;
+        }
+
+        function goToInstructions() {
+            APP_STATE.step = 4;
+            render();
+            speakText(`Baik ${APP_STATE.studentName}, mari kita pelajari petunjuk dan materi matematika.`);
+        }
+
+        // 4. Instructions Page
+        function renderInstructionPage(container) {
+            container.innerHTML = `
+                <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 max-w-xl w-full text-center border border-indigo-100 my-auto">
+                    <div class="inline-block p-4 bg-amber-100 text-amber-600 rounded-full mb-4">
+                        <i class="fa-solid fa-book-bookmark text-4xl"></i>
+                    </div>
+                    <h2 class="heading-font text-2xl md:text-3xl font-extrabold text-slate-800 mb-2">SIAP BELAJAR MATEMATIKA?</h2>
+                    <p class="text-slate-600 text-sm mb-6">Modul disusun berdasarkan Kurikulum Buku Pemerintah Matematika Kelas 5 SD/MI.</p>
+                    
+                    <button onclick="goToMaterialsHub()" class="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold rounded-2xl shadow-lg hover:from-indigo-700 hover:to-blue-700 transition text-lg flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-book-open"></i> 🚀 BUKA MATERI BAB 1 - 6
+                    </button>
+                </div>
+            `;
+        }
+
+        function goToMaterialsHub() {
+            APP_STATE.step = 5;
+            render();
+        }
+
+        // 5. Materials Hub (Bab 1 - 6)
+        function renderMaterialsHub(container) {
+            container.innerHTML = `
+                <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-6 md:p-8 max-w-3xl w-full my-auto border border-indigo-100 flex flex-col max-h-[85vh]">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+                        <div>
+                            <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Modul Pembelajaran</span>
+                            <h2 class="heading-font text-xl md:text-2xl font-extrabold text-slate-800 mt-1">MATERI MATEMATIKA KELAS 5 BAB 1 - 6</h2>
+                        </div>
+                        ${APP_STATE.fromQuizToMaterial ? `
+                            <button onclick="backToQuiz()" class="px-4 py-2 bg-amber-500 text-white font-bold rounded-xl shadow hover:bg-amber-600 transition flex items-center gap-2 text-sm">
+                                <i class="fa-solid fa-arrow-left"></i> ↩ KEMBALI KE KUIS
+                            </button>
+                        ` : ''}
+                    </div>
+
+                    <div class="overflow-y-auto pr-2 space-y-6 flex-grow text-left">
+                        <!-- BAB 1 -->
+                        <div class="bg-indigo-50/70 border border-indigo-200 rounded-2xl p-5 shadow-sm">
+                            <h3 class="heading-font text-lg font-bold text-indigo-900 mb-2 flex items-center gap-2">
+                                <span class="bg-indigo-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans">1</span>
+                                BAB 1 – BILANGAN CACAH SAMPAI 100.000
+                            </h3>
+                            <ul class="list-disc list-inside text-sm text-slate-700 space-y-1 ml-2">
+                                <li><strong>Membaca & Menulis:</strong> Contoh 45.327 dibaca <em>Empat puluh lima ribu tiga ratus dua puluh tujuh</em>.</li>
+                                <li><strong>Nilai Tempat:</strong> Pada 78.415, angka 8 bernilai ribuan (8.000).</li>
+                                <li><strong>Komposisi & Dekomposisi:</strong> 62.940 = 60.000 + 2.000 + 900 + 40.</li>
+                                <li><strong>Membandingkan & Mengurutkan:</strong> Gunakan tanda <, >, atau =. Bandingkan dari nilai tempat terbesar (puluh ribuan).</li>
+                            </ul>
+                        </div>
+
+                        <!-- BAB 2 -->
+                        <div class="bg-blue-50/70 border border-blue-200 rounded-2xl p-5 shadow-sm">
+                            <h3 class="heading-font text-lg font-bold text-blue-900 mb-2 flex items-center gap-2">
+                                <span class="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans">2</span>
+                                BAB 2 – OPERASI HITUNG BILANGAN CACAH SAMPAI 100.000
+                            </h3>
+                            <ul class="list-disc list-inside text-sm text-slate-700 space-y-1 ml-2">
+                                <li><strong>Penjumlahan & Pengurangan:</strong> Disusun ke bawah sesuai nilai tempat (satuan dengan satuan, puluhan dengan puluhan).</li>
+                                <li><strong>Perkalian & Pembagian:</strong> Operasi perkalian dan pembagian dikerjakan lebih dulu dibanding penjumlahan/pengurangan jika dalam satu kalimat matematika.</li>
+                                <li><strong>Penerapan Sehari-hari:</strong> Contoh pembagian barang ke dalam kotak secara merata.</li>
+                            </ul>
+                        </div>
+
+                        <!-- BAB 3 -->
+                        <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-5 shadow-sm">
+                            <h3 class="heading-font text-lg font-bold text-emerald-900 mb-2 flex items-center gap-2">
+                                <span class="bg-emerald-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans">3</span>
+                                BAB 3 – KPK DAN FPB
+                            </h3>
+                            <ul class="list-disc list-inside text-sm text-slate-700 space-y-1 ml-2">
+                                <li><strong>Kelipatan & Faktor:</strong> Faktor 24 adalah 1, 2, 3, 4, 6, 8, 12, 24. Kelipatan persekutuan terkecil disebut KPK.</li>
+                                <li><strong>Menentukan FPB:</strong> Faktor Persekutuan Terbesar dari dua bilangan.</li>
+                                <li><strong>Penerapan:</strong> KPK digunakan untuk jadwal menyala bersamaan; FPB untuk pembagian jumlah keranjang/bingkisan yang sama banyak.</li>
+                            </ul>
+                        </div>
+
+                        <!-- BAB 4 -->
+                        <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-5 shadow-sm">
+                            <h3 class="heading-font text-lg font-bold text-amber-900 mb-2 flex items-center gap-2">
+                                <span class="bg-amber-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans">4</span>
+                                BAB 4 – PECAHAN
+                            </h3>
+                            <ul class="list-disc list-inside text-sm text-slate-700 space-y-1 ml-2">
+                                <li><strong>Pecahan Campuran:</strong> Mengubah $3\\frac{2}{5} = \\frac{17}{5}$.</li>
+                                <li><strong>Membandingkan & Mengurutkan:</strong> Samakan penyebut terlebih dahulu menggunakan KPK penyebut.</li>
+                                <li><strong>Penjumlahan & Pengurangan Pecahan:</strong> Samakan penyebut, lalu jumlahkan/kurangkan pembilangnya.</li>
+                            </ul>
+                        </div>
+
+                        <!-- BAB 5 -->
+                        <div class="bg-purple-50/70 border border-purple-200 rounded-2xl p-5 shadow-sm">
+                            <h3 class="heading-font text-lg font-bold text-purple-900 mb-2 flex items-center gap-2">
+                                <span class="bg-purple-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans">5</span>
+                                BAB 5 – KELILING BANGUN DATAR
+                            </h3>
+                            <ul class="list-disc list-inside text-sm text-slate-700 space-y-1 ml-2">
+                                <li><strong>Persegi:</strong> $\\text{Keliling} = 4 \\times \\text{sisi}$</li>
+                                <li><strong>Persegi Panjang:</strong> $\\text{Keliling} = 2 \\times (\\text{panjang} + \\text{lebar})$</li>
+                                <li><strong>Segitiga:</strong> Jumlah ketiga sisi bangun segitiga ($s_1 + s_2 + s_3$).</li>
+                                <li><strong>Keliling Gabungan:</strong> Menjumlahkan seluruh panjang sisi luar bangun.</li>
+                            </ul>
+                        </div>
+
+                        <!-- BAB 6 -->
+                        <div class="bg-rose-50/70 border border-rose-200 rounded-2xl p-5 shadow-sm">
+                            <h3 class="heading-font text-lg font-bold text-rose-900 mb-2 flex items-center gap-2">
+                                <span class="bg-rose-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans">6</span>
+                                BAB 6 – LUAS BANGUN DATAR
+                            </h3>
+                            <ul class="list-disc list-inside text-sm text-slate-700 space-y-1 ml-2">
+                                <li><strong>Persegi:</strong> $\\text{Luas} = \\text{sisi} \\times \\text{sisi}$</li>
+                                <li><strong>Persegi Panjang:</strong> $\\text{Luas} = \\text{panjang} \\times \\text{lebar}$</li>
+                                <li><strong>Segitiga:</strong> $\\text{Luas} = \\frac{1}{2} \\times \\text{alas} \\times \\text{tinggi}$</li>
+                                <li><strong>Luas Gabungan:</strong> Menjumlahkan luas bagian-bagian bangun datar penyusunnya.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100 mt-4 text-center">
+                        ${APP_STATE.fromQuizToMaterial ? `
+                            <button onclick="backToQuiz()" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-2xl shadow-lg hover:from-amber-600 hover:to-orange-600 transition text-base flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-arrow-left"></i> ↩ KEMBALI KE KUIS (SOAL ${APP_STATE.currentQuestionIndex + 1}/50)
+                            </button>
+                        ` : `
+                            <button onclick="goToReadyQuiz()" class="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold rounded-2xl shadow-lg hover:from-indigo-700 hover:to-blue-700 transition text-lg flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-pen-to-square"></i> 📝 MULAI KUIS 50 SOAL
+                            </button>
+                        `}
+                    </div>
+                </div>
+            `;
+        }
+
+        function goToReadyQuiz() {
+            APP_STATE.step = 6;
+            render();
+            speakText(`Hebat ${APP_STATE.studentName}! Kamu sudah selesai mempelajari materinya. Apakah kamu siap mengerjakan 50 soal kuis matematika?`);
+        }
+
+        // 6. Ready Quiz Page
+        function renderReadyQuizPage(container) {
+            container.innerHTML = `
+                <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 max-w-lg w-full text-center border border-indigo-100 my-auto">
+                    <div class="inline-block p-4 bg-indigo-100 text-indigo-600 rounded-full mb-4 animate-pulse">
+                        <i class="fa-solid fa-circle-question text-4xl"></i>
+                    </div>
+                    <h2 class="heading-font text-2xl md:text-3xl font-extrabold text-slate-800 mb-2">SIAP KUIS, ${APP_STATE.studentName}?</h2>
+                    <p class="text-slate-600 text-sm mb-8 leading-relaxed">
+                        Kamu akan menghadapi 50 soal pilihan ganda dari Bab 1 sampai Bab 6. Kamu dapat membuka kembali materi kapan saja jika diperlukan selama kuis!
+                    </p>
+                    <button onclick="startQuizSession()" class="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold rounded-2xl shadow-lg hover:from-indigo-700 hover:to-blue-700 transition text-lg flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-play"></i> MULAI KUIS 50 SOAL SEKARANG
+                    </button>
+                </div>
+            `;
+        }
+
+        function startQuizSession() {
+            APP_STATE.step = 7;
+            render();
+            speakText(`Baik ${APP_STATE.studentName}. Mari kita mulai ke soal pertama.`);
+        }
+
+        // 7. Quiz Page
+        function renderQuizPage(container) {
+            const qIdx = APP_STATE.currentQuestionIndex;
+            const q = QUIZ_QUESTIONS[qIdx];
+            const answeredOption = APP_STATE.answers[qIdx];
+            const isAnswered = answeredOption !== undefined;
+
+            container.innerHTML = `
+                <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-6 md:p-8 max-w-2xl w-full my-auto border border-indigo-100 flex flex-col">
+                    <!-- Top Bar: Progress & Material Return Button -->
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1 rounded-full">
+                                SOAL ${qIdx + 1} DARI 50
+                            </span>
+                            <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md hidden sm:inline-block">
+                                ${q.bab}
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="text-sm font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-xl border border-indigo-200">
+                                Skor: ${APP_STATE.score}
+                            </div>
+                            <button onclick="openMaterialFromQuiz()" class="px-3 py-1.5 bg-amber-50 text-amber-700 hover:bg-amber-100 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border border-amber-200 shadow-sm" title="Kembali ke materi pembelajaran">
+                                <i class="fa-solid fa-book-open"></i> 📚 KEMBALI KE MATERI
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Student Name Tag -->
+                    <div class="text-xs text-slate-500 mb-2 font-medium">
+                        Nama: <span class="font-bold text-slate-800">${APP_STATE.studentName}</span>
+                    </div>
+
+                    <!-- Question Text -->
+                    <div class="mb-5">
+                        <h3 class="font-bold text-slate-800 text-lg md:text-xl leading-snug">${q.question}</h3>
+                    </div>
+
+                    <!-- Options List -->
+                    <div class="space-y-3 mb-6">
+                        ${q.options.map((opt, idx) => {
+                            let btnStyle = "border-slate-200 bg-white hover:bg-slate-50 text-slate-700";
+                            if (isAnswered) {
+                                if (idx === q.answer) {
+                                    btnStyle = "border-emerald-500 bg-emerald-50 text-emerald-900 font-bold ring-2 ring-emerald-400";
+                                } else if (idx === answeredOption && answeredOption !== q.answer) {
+                                    btnStyle = "border-rose-400 bg-rose-50 text-rose-900 font-bold";
+                                } else {
+                                    btnStyle = "border-slate-200 bg-slate-50 text-slate-400 opacity-60";
+                                }
+                            }
+                            return `
+                                <button onclick="selectOption(${idx})" ${isAnswered ? 'disabled' : ''} 
+                                    class="w-full text-left p-4 rounded-2xl border-2 transition text-sm md:text-base flex items-start gap-3 ${btnStyle}">
+                                    <span class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 ${isAnswered && idx === q.answer ? 'bg-emerald-500 text-white border-emerald-500' : ''}">${String.fromCharCode(65 + idx)}</span>
+                                    <span>${opt}</span>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+
+                    <!-- Explanation & Feedback Box (Visible after answer) -->
+                    ${isAnswered ? `
+                        <div class="p-4 rounded-2xl mb-6 ${answeredOption === q.answer ? 'bg-emerald-50 border border-emerald-200 text-emerald-900' : 'bg-rose-50 border border-rose-200 text-rose-900'} animate-fadeIn">
+                            <div class="flex items-center gap-2 font-bold mb-1">
+                                ${answeredOption === q.answer ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i> ✓ BENAR!' : '<i class="fa-solid fa-circle-xmark text-rose-600 text-lg"></i> ✗ BELUM TEPAT'}
+                            </div>
+                            <p class="text-sm leading-relaxed">${q.explanation}</p>
+                        </div>
+                    ` : ''}
+
+                    <!-- Navigation Footer -->
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                        <div class="text-xs text-slate-400 font-medium">
+                            Benar: ${APP_STATE.correctCount} | Salah: ${APP_STATE.wrongCount}
+                        </div>
+                        <div>
+                            ${isAnswered ? `
+                                <button onclick="nextQuestion()" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold rounded-2xl shadow hover:from-indigo-700 hover:to-blue-700 transition flex items-center gap-2 text-sm">
+                                    <span>${qIdx === 49 ? 'LIHAT HASIL AKHIR' : 'SOAL BERIKUTNYA'}</span> <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            ` : `
+                                <span class="text-xs text-slate-400 italic">Pilih salah satu jawaban di atas</span>
+                            `}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openMaterialFromQuiz() {
+            APP_STATE.fromQuizToMaterial = true;
+            APP_STATE.step = 5;
+            render();
+            speakText(`Silakan membaca materi kembali, ${APP_STATE.studentName}. Skor dan posisi soal kamu aman tersimpan.`);
+        }
+
+        function backToQuiz() {
+            APP_STATE.fromQuizToMaterial = false;
+            APP_STATE.step = 7;
+            render();
+            speakText(`Kembali ke kuis, ${APP_STATE.studentName}. Lanjutkan kerja bagusmu!`);
+        }
+
+        function selectOption(idx) {
+            const qIdx = APP_STATE.currentQuestionIndex;
+            const q = QUIZ_QUESTIONS[qIdx];
+            APP_STATE.answers[qIdx] = idx;
+
+            const isCorrect = idx === q.answer;
+            if (isCorrect) {
+                APP_STATE.score += 20;
+                APP_STATE.correctCount += 1;
+                speakText(`Benar, ${APP_STATE.studentName}! Hebat sekali! Jawaban kamu tepat.`);
+            } else {
+                APP_STATE.wrongCount += 1;
+                const correctLetter = String.fromCharCode(65 + q.answer);
+                speakText(`Belum tepat, ${APP_STATE.studentName}. Jangan menyerah. Jawaban yang benar adalah ${correctLetter}.`);
+            }
+
+            render();
+        }
+
+        function nextQuestion() {
+            if (APP_STATE.currentQuestionIndex < QUIZ_QUESTIONS.length - 1) {
+                APP_STATE.currentQuestionIndex += 1;
+                render();
+                
+                const transitionPhrases = [
+                    `Bagus, ${APP_STATE.studentName}. Sekarang kita lanjut ke soal berikutnya.`,
+                    `Hebat, ${APP_STATE.studentName}! Mari lanjut ke soal berikutnya.`,
+                    `Semangat, ${APP_STATE.studentName}! Ini soal selanjutnya ya.`
+                ];
+                const randomPhrase = transitionPhrases[Math.floor(Math.random() * transitionPhrases.length)];
+                speakText(randomPhrase);
+            } else {
+                APP_STATE.step = 8;
+                render();
+                
+                const finalScore = APP_STATE.score;
+                speakText(`Selamat, ${APP_STATE.studentName}! Kamu telah menyelesaikan 50 soal. Skor kamu adalah ${finalScore} dari 1000.`);
+            }
+        }
+
+        // 8. Results Page
+        function renderResultsPage(container) {
+            const score = APP_STATE.score;
+            const correct = APP_STATE.correctCount;
+            const wrong = APP_STATE.wrongCount;
+            let praiseMsg = "";
+            let badgeColor = "bg-indigo-100 text-indigo-800 border-indigo-300";
+
+            if (score >= 850) {
+                praiseMsg = `Hebat sekali, ${APP_STATE.studentName}! Penguasaan matematikamu sangat luar biasa! Terus pertahankan prestasi hebatmu.`;
+            } else if (score >= 600) {
+                praiseMsg = `Kerja bagus, ${APP_STATE.studentName}! Kamu sudah belajar dengan giat. Terus tingkatkan kemampuan matematikamu!`;
+            } else {
+                praiseMsg = `Semangat, ${APP_STATE.studentName}! Jangan menyerah. Kamu bisa membaca materi kembali dan mengulangi kuis untuk hasil yang lebih gemilang!`;
+                badgeColor = "bg-amber-100 text-amber-800 border-amber-300";
+            }
+
+            container.innerHTML = `
+                <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 max-w-lg w-full text-center border border-indigo-100 my-auto">
+                    <div class="inline-block p-4 bg-indigo-100 text-indigo-600 rounded-full mb-4 shadow-inner">
+                        <i class="fa-solid fa-trophy text-4xl"></i>
+                    </div>
+                    <h2 class="heading-font text-2xl md:text-3xl font-extrabold text-slate-800 mb-1">🎉 KUIS SELESAI! 🎉</h2>
+                    <p class="text-slate-600 text-sm mb-6">Petualangan 50 Soal Matematika Kelas 5</p>
+
+                    <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl mb-6 space-y-4">
+                        <div>
+                            <span class="text-xs uppercase tracking-wider text-slate-400 font-bold block mb-1">Nama Siswa</span>
+                            <span class="text-xl font-extrabold text-slate-800">${APP_STATE.studentName}</span>
+                        </div>
+                        <div class="flex justify-center gap-3">
+                            <div class="bg-white p-3 rounded-xl border border-slate-200 flex-1">
+                                <span class="text-xs text-slate-400 block font-bold">SKOR</span>
+                                <span class="text-2xl font-extrabold text-indigo-600">${score}</span>
+                                <span class="text-xs text-slate-500">/ 1000</span>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-slate-200 flex-1">
+                                <span class="text-xs text-slate-400 block font-bold">BENAR</span>
+                                <span class="text-2xl font-extrabold text-emerald-600">${correct}</span>
+                                <span class="text-xs text-slate-500">/ 50</span>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-slate-200 flex-1">
+                                <span class="text-xs text-slate-400 block font-bold">SALAH</span>
+                                <span class="text-2xl font-extrabold text-rose-500">${wrong}</span>
+                                <span class="text-xs text-slate-500">/ 50</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl border ${badgeColor} text-sm font-semibold mb-6 leading-relaxed">
+                        ${praiseMsg}
+                    </div>
+
+                    <div class="space-y-3">
+                        <button onclick="goToCertificate()" class="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold rounded-2xl shadow-lg hover:from-indigo-700 hover:to-blue-700 transition text-base flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-award"></i> 🏆 LIHAT SERTIFIKAT PENGHARGAAN
+                        </button>
+                        <button onclick="restartGame()" class="w-full py-3 bg-slate-100 text-slate-700 font-bold rounded-2xl hover:bg-slate-200 transition text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-rotate-right"></i> 🔄 ULANGI KUIS
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function goToCertificate() {
+            APP_STATE.step = 9;
+            render();
+            speakText(`Selamat, ${APP_STATE.studentName}! Sertifikat penghargaan matematika kamu telah diterbitkan.`);
+        }
+
+        // 9. Certificate Page
+        function renderCertificatePage(container) {
+            const currentDate = new Date().toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+
+            container.innerHTML = `
+                <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-10 max-w-3xl w-full my-auto border-8 border-double border-amber-400 relative text-center flex flex-col justify-between">
+                    <!-- Certificate Watermarks -->
+                    <div class="absolute top-4 left-4 text-amber-500 text-2xl"><i class="fa-solid fa-star"></i></div>
+                    <div class="absolute top-4 right-4 text-amber-500 text-2xl"><i class="fa-solid fa-star"></i></div>
+
+                    <div>
+                        <div class="text-indigo-700 font-extrabold tracking-widest text-xs md:text-sm uppercase mb-1">KEMENTERIAN PENDIDIKAN • KURIKULUM MERDEKA</div>
+                        <h1 class="heading-font text-3xl md:text-4xl font-black text-slate-900 tracking-wide mb-2 uppercase">SERTIFIKAT PENGHARGAAN</h1>
+                        <p class="text-xs md:text-sm text-slate-500 italic mb-6">Nomor: CERT/${Math.floor(Math.random()*89999 + 10000)}/MATH/2026</p>
+
+                        <p class="text-sm md:text-base text-slate-600 mb-2">Sertifikat ini dengan bangga diberikan kepada:</p>
+                        
+                        <div class="my-3 inline-block border-b-4 border-indigo-600 pb-1 px-8">
+                            <h2 class="heading-font text-3xl md:text-4xl font-black text-indigo-800 tracking-wider uppercase">${APP_STATE.studentName}</h2>
+                        </div>
+
+                        <p class="text-sm md:text-base text-slate-600 max-w-xl mx-auto mb-4 leading-relaxed">
+                            Atas keberhasilannya menyelesaikan seluruh rangkaian materi dan kuis dalam:
+                        </p>
+
+                        <h3 class="heading-font text-lg md:text-xl font-extrabold text-blue-900 mb-6 bg-blue-50 py-3 px-6 rounded-2xl border border-blue-200 inline-block">
+                            "PETUALANGAN MATEMATIKA KELAS 5 SD/MI"
+                        </h3>
+
+                        <div class="flex flex-wrap justify-center gap-4 mb-8 text-sm md:text-base font-semibold text-slate-700">
+                            <div class="bg-slate-50 px-4 py-2 rounded-xl border border-slate-200">
+                                Skor: <span class="text-indigo-600 font-extrabold">${APP_STATE.score}</span> / 1000
+                            </div>
+                            <div class="bg-slate-50 px-4 py-2 rounded-xl border border-slate-200">
+                                Jawaban Benar: <span class="text-emerald-600 font-extrabold">${APP_STATE.correctCount}</span> dari 50 soal
+                            </div>
+                            <div class="bg-slate-50 px-4 py-2 rounded-xl border border-slate-200">
+                                Tanggal: <span class="text-slate-900 font-extrabold">${currentDate}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Certificate with required Developer watermark -->
+                    <div class="pt-6 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+                        <div class="text-left">
+                            <p class="font-bold text-slate-700">Wali Kelas / Guru Pengampu</p>
+                            <div class="h-8"></div>
+                            <p class="border-t border-slate-400 pt-1 font-semibold">Guru Matematika Kelas 5</p>
+                        </div>
+                        
+                        <!-- Required Developer Watermark on Certificate -->
+                        <div class="text-center md:text-right bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                            <p class="font-bold text-slate-700">Pengembang</p>
+                            <p class="font-extrabold text-indigo-700">Giga Inovation</p>
+                            <p class="text-[11px] text-slate-500">081329200985</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons Outside Certificate -->
+                <div class="mt-6 flex flex-wrap gap-3 justify-center w-full max-w-3xl">
+                    <button onclick="window.print()" class="px-6 py-3 bg-indigo-600 text-white font-bold rounded-2xl shadow-lg hover:bg-indigo-700 transition text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-print"></i> CETAK / SIMPAN SERTIFIKAT
+                    </button>
+                    <button onclick="restartGame()" class="px-6 py-3 bg-slate-200 text-slate-700 font-bold rounded-2xl hover:bg-slate-300 transition text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> MAIN LAGI DARI AWAL
+                    </button>
+                </div>
+            `;
+        }
+
+        function restartGame() {
+            APP_STATE.step = 7; // Direct to question 1 with preserved name
+            APP_STATE.currentQuestionIndex = 0;
+            APP_STATE.score = 0;
+            APP_STATE.correctCount = 0;
+            APP_STATE.wrongCount = 0;
+            APP_STATE.answers = {};
+            APP_STATE.fromQuizToMaterial = false;
+            render();
+            speakText(`Kuis diulang kembali dari awal, ${APP_STATE.studentName}. Semangat!`);
+        }
+
+        // Initialize on window load
+        window.onload = function() {
+            render();
+        };
+    </script>
+</body>
+</html>
