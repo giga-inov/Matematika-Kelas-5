@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Petualangan Matematika Kls 5 - Giga Inovation</title>
-    <!-- Google Fonts & Tailwind CSS -->
+    <title>Petualangan Matematika Kelas 5 - Giga Inovation</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
@@ -23,13 +22,12 @@
                     <p class="text-xs text-slate-500">Kurikulum Merdeka</p>
                 </div>
             </div>
-            <!-- Menu Navigasi -->
             <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
                 <button onclick="pindahTab('beranda')" class="text-slate-600 hover:text-indigo-600 transition cursor-pointer">Beranda</button>
                 <button onclick="pindahTab('materi')" class="text-slate-600 hover:text-indigo-600 transition cursor-pointer">Materi</button>
                 <button onclick="pindahTab('kuis')" class="text-indigo-600 font-semibold transition cursor-pointer">Kuis & Game</button>
                 <button onclick="pindahTab('sertifikat')" class="text-slate-600 hover:text-indigo-600 transition cursor-pointer">Sertifikat</button>
-                <button onclick="pindahTab('dashboard')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition cursor-pointer">Dashboard Guru</button>
+                <button onclick="bukaDashboardGuru()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition cursor-pointer">Dashboard Guru</button>
             </nav>
         </div>
     </header>
@@ -37,30 +35,30 @@
     <!-- KONTEN UTAMA -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow">
 
-        <!-- 1. HALAMAN BERANDA -->
+        <!-- 1. BERANDA -->
         <div id="tab-beranda" class="space-y-6 text-center py-12">
             <div class="max-w-2xl mx-auto space-y-4">
                 <span class="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-xs font-semibold">Belajar Tidak Harus Membosankan</span>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900">Petualangan Matematika Kelas 5</h2>
-                <p class="text-slate-600 text-sm md:text-base">Ubah soal latihan menjadi petualangan game seru! Kerjakan 50 soal kuis pilihan ganda, isian, dan uraian, raih skor tinggi, dan pantau progresmu.</p>
+                <p class="text-slate-600 text-sm md:text-base">Ubah soal latihan menjadi game petualangan yang seru! Hadapi 50 soal tantangan, jaga 3 nyawamu, raih skor tertinggi, dan dapatkan sertifikat resmi.</p>
                 <div class="pt-4 flex justify-center gap-4">
                     <button onclick="pindahTab('kuis')" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg transition cursor-pointer">Mulai Kuis Sekarang 🚀</button>
-                    <button onclick="pindahTab('dashboard')" class="px-6 py-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold rounded-xl transition cursor-pointer">Dashboard Guru 📊</button>
+                    <button onclick="bukaDashboardGuru()" class="px-6 py-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold rounded-xl transition cursor-pointer">Dashboard Guru 📊</button>
                 </div>
             </div>
         </div>
 
-        <!-- 2. HALAMAN MATERI -->
+        <!-- 2. MATERI -->
         <div id="tab-materi" class="hidden space-y-6">
             <h2 class="text-2xl font-bold text-slate-900">Materi Pembelajaran Kelas 5</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="p-6 bg-white border border-slate-200 rounded-2xl shadow-xs">
                     <h3 class="font-bold text-indigo-600 text-lg mb-2">Modul 1: Bilangan Cacah Sampai 100.000</h3>
-                    <p class="text-sm text-slate-600">Mempelajari nilai tempat, membaca lambang bilangan, perbandingan, serta operasi hitung bilangan besar.</p>
+                    <p class="text-sm text-slate-600">Mempelajari nilai tempat, membaca lambang bilangan besar, perbandingan, dan operasi hitung.</p>
                 </div>
                 <div class="p-6 bg-white border border-slate-200 rounded-2xl shadow-xs">
                     <h3 class="font-bold text-indigo-600 text-lg mb-2">Modul 2: KPK dan FPB</h3>
-                    <p class="text-sm text-slate-600">Memahami kelipatan, faktor prima, cara menentukan KPK dan FPB beserta penerapannya dalam kehidupan sehari-hari.</p>
+                    <p class="text-sm text-slate-600">Memahami kelipatan, faktor prima, cara menentukan KPK dan FPB serta penerapannya.</p>
                 </div>
                 <div class="p-6 bg-white border border-slate-200 rounded-2xl shadow-xs">
                     <h3 class="font-bold text-indigo-600 text-lg mb-2">Modul 3: Pecahan</h3>
@@ -73,25 +71,27 @@
             </div>
         </div>
 
-        <!-- 3. HALAMAN KUIS 50 SOAL (TERINTEGRASI MONITORING) -->
+        <!-- 3. KUIS & GAME (50 SOAL + 3 NYAWA + SUARA) -->
         <div id="tab-kuis" class="hidden max-w-3xl mx-auto bg-white border border-slate-200 rounded-2xl shadow-sm p-6 md:p-8 space-y-6">
             
-            <!-- Form Registrasi Masuk Kuis -->
+            <!-- Registrasi Nama Siswa (Tanpa kolom kelas karena sudah pasti kelas 5) -->
             <div id="kuis-reg" class="space-y-4 text-center py-4">
-                <h3 class="text-2xl font-bold text-slate-900">🎮 Mulai Petualangan Kuis (50 Soal)</h3>
-                <p class="text-sm text-slate-500">Masukkan nama dan kelasmu agar skor tercatat di Dashboard Guru.</p>
+                <h3 class="text-2xl font-bold text-slate-900">🎮 Petualangan Kuis 50 Soal</h3>
+                <p class="text-sm text-slate-500">Masukkan nama lengkapmu untuk mulai bertualang dan mencatat skor di Dashboard Guru.</p>
                 <div class="max-w-sm mx-auto space-y-3 text-left pt-2">
                     <input type="text" id="reg-nama" placeholder="Nama Lengkap Siswa..." class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-indigo-500 text-sm">
-                    <input type="text" id="reg-kelas" placeholder="Kelas / Absen (Cth: Kelas 5 / 12)..." class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-indigo-500 text-sm">
-                    <button onclick="mulaiKuisAktif()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow transition cursor-pointer">Mulai Tantangan 🎯</button>
+                    <button onclick="mulaiKuisAktif()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow transition cursor-pointer">Mulai Petualangan 🎯</button>
                 </div>
             </div>
 
-            <!-- Area Soal Kuis Interaktif -->
+            <!-- Main Kuis -->
             <div id="kuis-main" class="hidden space-y-6">
                 <div class="flex justify-between items-center border-b border-slate-100 pb-3">
                     <span id="progress-soal" class="text-xs font-bold px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full">Soal 1 dari 50</span>
-                    <span class="text-xs font-medium text-slate-500">Siswa: <strong id="lbl-nama-siswa" class="text-slate-800"></strong></span>
+                    <div class="flex items-center space-x-4">
+                        <span id="nyawa-container" class="text-sm font-semibold text-rose-600">❤️ ❤️ ❤️</span>
+                        <button onclick="bacaSoalAudio()" class="p-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-xl text-xs font-semibold transition cursor-pointer" title="Putar Suara Soal">🔊 Baca</button>
+                    </div>
                 </div>
 
                 <div class="space-y-3">
@@ -106,34 +106,34 @@
                 </div>
             </div>
 
-            <!-- Area Selesai / Hasil Kuis -->
+            <!-- Hasil Kuis / Game Over -->
             <div id="kuis-result" class="hidden text-center space-y-6 py-6">
-                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">🏆</div>
-                <h3 class="text-2xl font-bold text-slate-900">Kuis Telah Diselesaikan!</h3>
+                <div id="icon-hasil" class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">🏆</div>
+                <h3 id="judul-hasil" class="text-2xl font-bold text-slate-900">Kuis Telah Diselesaikan!</h3>
+                <p id="pesan-hasil" class="text-xs text-slate-500">Hebat! Kamu berhasil menyelesaikan seluruh tantangan.</p>
                 <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl max-w-xs mx-auto space-y-1">
                     <div class="text-xs text-slate-500">Skor Akhir Kamu</div>
                     <div id="skor-akhir-val" class="text-4xl font-extrabold text-indigo-600">0</div>
-                    <div id="predikat-val" class="text-xs font-semibold text-emerald-600 pt-1">Luar Biasa!</div>
                 </div>
                 <div class="flex justify-center gap-3">
                     <button onclick="pindahTab('sertifikat')" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-sm shadow transition cursor-pointer">📜 Lihat Sertifikat</button>
-                    <button onclick="pindahTab('dashboard')" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm shadow transition cursor-pointer">📊 Cek Dashboard Guru</button>
+                    <button onclick="bukaDashboardGuru()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm shadow transition cursor-pointer">📊 Cek Dashboard Guru</button>
                 </div>
             </div>
 
         </div>
 
-        <!-- 4. HALAMAN SERTIFIKAT -->
+        <!-- 4. SERTIFIKAT -->
         <div id="tab-sertifikat" class="hidden text-center space-y-6 max-w-xl mx-auto py-8">
             <h2 class="text-2xl font-bold text-slate-900">Sertifikat Penghargaan</h2>
             <div id="sertifikat-card" class="bg-white border-4 border-amber-400 p-8 rounded-2xl shadow-xl text-left space-y-4">
                 <div class="text-center">
                     <p class="text-xs font-bold text-slate-400 tracking-widest uppercase">Giga Inovation - 081329200985</p>
-                    <h3 class="text-xl font-extrabold text-indigo-900 mt-1">SERTIFIKAT KELULUSAN</h3>
+                    <h3 class="text-xl font-extrabold text-indigo-900 mt-1">SERTIFIKAT KELULUSAN KELAS 5</h3>
                 </div>
                 <p class="text-xs text-center text-slate-500">Diberikan secara resmi kepada:</p>
                 <h2 id="cert-nama-siswa" class="text-center text-2xl font-bold text-indigo-600 underline">Belum Ada Nama</h2>
-                <p class="text-xs text-center text-slate-600">Telah sukses merampungkan tantangan kuis 50 soal <strong>"Petualangan Matematika Kelas 5"</strong>.</p>
+                <p class="text-xs text-center text-slate-600">Telah sukses merampungkan petualangan kuis matematika kelas 5 kurikulum merdeka.</p>
                 <div class="flex justify-between items-center pt-6 border-t border-slate-100 text-xs text-slate-500">
                     <div>Pencapaian Skor: <strong id="cert-skor-val" class="text-slate-800">0 / 100</strong></div>
                     <div class="text-right">Disahkan Oleh:<br><strong>Giga Inovation</strong></div>
@@ -142,12 +142,12 @@
             <button onclick="window.print()" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-xl text-sm transition cursor-pointer">🖨️ Cetak / Unduh Sertifikat</button>
         </div>
 
-        <!-- 5. HALAMAN DASHBOARD GURU (REAL-TIME SYNC) -->
+        <!-- 5. DASHBOARD GURU -->
         <div id="tab-dashboard" class="hidden space-y-6">
             <div class="flex justify-between items-center">
                 <div>
                     <h2 class="text-2xl font-bold text-slate-900">Dashboard Guru & Progres Siswa</h2>
-                    <p class="text-xs text-slate-500 mt-1">Pantau aktivitas belajar dan hasil kuis seluruh siswa secara real-time.</p>
+                    <p class="text-xs text-slate-500 mt-1">Pantau aktivitas belajar siswa secara real-time dari database.</p>
                 </div>
                 <button onclick="refreshDashboard()" class="px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-xl text-xs font-semibold transition cursor-pointer">🔄 Refresh Data</button>
             </div>
@@ -157,9 +157,9 @@
                     <thead>
                         <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-600">
                             <th class="p-4">NAMA SISWA</th>
-                            <th class="p-4">KELAS / ABSEN</th>
+                            <th class="p-4">KELAS</th>
                             <th class="p-4">SKOR KUIS</th>
-                            <th class="p-4">STATUS SERTIFIKAT</th>
+                            <th class="p-4">SERTIFIKAT</th>
                             <th class="p-4 text-right">AKSI</th>
                         </tr>
                     </thead>
@@ -178,7 +178,20 @@
         Pengembang: <strong class="text-slate-700">Giga Inovation | 081329200985</strong>
     </footer>
 
-    <!-- LOGIKA JAVASCRIPT KUIS & DASHBOARD -->
+    <!-- MODAL PIN GURU (PIN: 1234) -->
+    <div id="modal-pin" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs hidden flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-2xl shadow-xl max-w-xs w-full text-center space-y-4">
+            <h3 class="font-bold text-lg text-slate-900">🔒 PIN Dashboard Guru</h3>
+            <p class="text-xs text-slate-500">Masukkan PIN keamanan guru untuk mengakses dashboard (PIN: 1234).</p>
+            <input type="password" id="input-pin" maxlength="4" placeholder="• • • •" class="w-full text-center tracking-widest text-lg px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-indigo-500">
+            <div class="flex gap-2 pt-2">
+                <button onclick="tutupPin()" class="w-1/2 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition cursor-pointer">Batal</button>
+                <button onclick="verifikasiPin()" class="w-1/2 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-medium transition cursor-pointer">Masuk</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIKA KUIS, 3 NYAWA, SUARA, DAN PIN 1234 -->
     <script>
         // Database 50 Soal Lengkap
         const databaseSoal = [
@@ -208,7 +221,7 @@
             { t: "24. Hasil dari 11/12 - 5/8 adalah ....", opsi: ["7/24", "17/24", "6/4", "37/24"], kunci: 0, tipe: "pg" },
             { t: "25. Ibu memiliki 1 1/2 liter minyak goreng, dipakai 3/5 liter. Sisa minyak ibu adalah ... liter.", opsi: ["6/10", "9/10", "1 2/3", "21/10"], kunci: 1, tipe: "pg" },
             
-            // Isian Singkat (26-40)
+            // Isian (26-40)
             { t: "26. Penduduk Desa Rukun Sentosa 32.416. Laki-laki 17.869. Lambang bilangan penduduk laki-laki ditulis ....", kunci: "17.869", tipe: "isian" },
             { t: "27. Jeruk Rp19.500, Mangga Rp21.000, Apel Rp20.500. Buah paling mahal adalah ....", kunci: "mangga", tipe: "isian" },
             { t: "28. Cantika punya uang sepuluh ribuan 4, seribuan 2, seratusan 7. Kolom ribuan bernilai ....", kunci: "0", tipe: "isian" },
@@ -225,7 +238,7 @@
             { t: "39. Urutan pecahan terkecil ke terbesar dari 1/2, 3/4, 2/5 adalah ....", kunci: "2/5, 1/2, 3/4", tipe: "isian" },
             { t: "40. Semangka dipotong 8 bagian, Andi makan 3 bagian. Sisa pecahan semangka adalah ....", kunci: "5/8", tipe: "isian" },
 
-            // Esai / Uraian (41-50)
+            // Uraian (41-50)
             { t: "41. Bu Fitri belanja Rp32.500 dibayar dengan pecahan 7 lembar sepuluh ribuan, 9 seribuan, 8 keping seratusan. Banyak lembar sepuluh ribuan yang dipakai adalah ....", kunci: "3", tipe: "isian" },
             { t: "42. Warung Makmur: Reguler Rp26.500, Dobel Rp51.000. Apakah benar 2 porsi reguler lebih hemat dibanding paket dobel? (Jawab: benar / salah)", kunci: "salah", tipe: "isian" },
             { t: "43. Siswa Kelas 5 25 orang, laki-laki 15. Jika dibagi kelompok belajar sama rata, banyak kelompok yang terbentuk adalah ....", kunci: "5", tipe: "isian" },
@@ -240,9 +253,9 @@
 
         let idxSoal = 0;
         let jawabanSiswa = new Array(databaseSoal.length).fill(null);
-        let currentSiswa = { nama: "", kelas: "", skor: 0 };
+        let currentSiswa = { nama: "", kelas: "Kelas 5", skor: 0 };
+        let nyawa = 3;
 
-        // Navigasi Antar Tab
         function pindahTab(tabId) {
             ['beranda', 'materi', 'kuis', 'sertifikat', 'dashboard'].forEach(id => {
                 document.getElementById(`tab-${id}`).classList.add('hidden');
@@ -251,22 +264,41 @@
             if(tabId === 'dashboard') refreshDashboard();
         }
 
-        // Mulai Kuis
+        function bukaDashboardGuru() {
+            document.getElementById('modal-pin').classList.remove('hidden');
+            document.getElementById('input-pin').value = "";
+            document.getElementById('input-pin').focus();
+        }
+
+        function tutupPin() {
+            document.getElementById('modal-pin').classList.add('hidden');
+        }
+
+        function verifikasiPin() {
+            let pin = document.getElementById('input-pin').value;
+            if(pin === "1234") {
+                tutupPin();
+                pindahTab('dashboard');
+            } else {
+                alert("PIN Salah! Masukkan PIN yang benar (1234).");
+                document.getElementById('input-pin').value = "";
+            }
+        }
+
         function mulaiKuisAktif() {
             let nama = document.getElementById('reg-nama').value.trim();
-            let kelas = document.getElementById('reg-kelas').value.trim();
             if(!nama) {
-                alert("Silakan masukkan nama lengkapmu terlebih dahulu!");
+                alert("Silakan masukkan nama lengkapmu!");
                 return;
             }
             currentSiswa.nama = nama;
-            currentSiswa.kelas = kelas || "Kelas 5";
-            
-            document.getElementById('lbl-nama-siswa').innerText = nama;
-            document.getElementById('kuis-reg').classList.add('hidden');
-            document.getElementById('kuis-main').classList.remove('hidden');
+            nyawa = 3;
             idxSoal = 0;
             jawabanSiswa = new Array(databaseSoal.length).fill(null);
+
+            document.getElementById('kuis-reg').classList.add('hidden');
+            document.getElementById('kuis-main').classList.remove('hidden');
+            document.getElementById('kuis-result').classList.add('hidden');
             muatTampilanSoal();
         }
 
@@ -274,6 +306,11 @@
             let soal = databaseSoal[idxSoal];
             document.getElementById('progress-soal').innerText = `Soal ${idxSoal + 1} dari ${databaseSoal.length}`;
             document.getElementById('teks-soal').innerText = soal.t;
+            
+            // Render nyawa
+            let nyawaStr = "";
+            for(let i=0; i<nyawa; i++) nyawaStr += "❤️ ";
+            document.getElementById('nyawa-container').innerText = nyawaStr;
 
             let bBox = document.getElementById('box-bacaan');
             if(soal.bacaan) {
@@ -305,7 +342,7 @@
                 let val = jawabanSiswa[idxSoal] || "";
                 let div = document.createElement('div');
                 div.innerHTML = `
-                    <input type="text" id="input-isian" value="${val}" placeholder="Ketik jawaban singkat di sini..." oninput="jawabanSiswa[idxSoal]=this.value.trim()" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-indigo-500 text-sm text-slate-800">
+                    <input type="text" id="input-isian" value="${val}" placeholder="Ketik jawaban di sini..." oninput="jawabanSiswa[idxSoal]=this.value.trim()" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-indigo-500 text-sm text-slate-800">
                 `;
                 container.appendChild(div);
             }
@@ -319,7 +356,40 @@
             }
         }
 
+        // Fitur Suara / Text-to-Speech
+        function bacaSoalAudio() {
+            if('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                let soal = databaseSoal[idxSoal];
+                let textToRead = (soal.bacaan ? soal.bacaan + ". " : "") + soal.t;
+                let speech = new SpeechSynthesisUtterance(textToRead);
+                speech.lang = 'id-ID';
+                window.speechSynthesis.speak(speech);
+            } else {
+                alert("Browser Anda tidak mendukung fitur suara.");
+            }
+        }
+
         function soalNext() {
+            // Validasi jawaban untuk sistem nyawa (opsional: mengurangi nyawa jika salah, atau lanjut)
+            let soal = databaseSoal[idxSoal];
+            let jwb = jawabanSiswa[idxSoal];
+            
+            // Cek kebenaran sederhana untuk sistem nyawa game
+            if(jwb !== null && jwb !== "") {
+                let benar = false;
+                if(soal.tipe === 'pg' && Number(jwb) === soal.kunci) benar = true;
+                if(soal.tipe === 'isian' && String(jwb).toLowerCase() === String(soal.kunci).toLowerCase()) benar = true;
+                
+                if(!benar && soal.tipe === 'pg') {
+                    nyawa--;
+                    if(nyawa <= 0) {
+                        gameOver();
+                        return;
+                    }
+                }
+            }
+
             if(idxSoal < databaseSoal.length - 1) {
                 idxSoal++;
                 muatTampilanSoal();
@@ -335,18 +405,23 @@
             }
         }
 
+        function gameOver() {
+            document.getElementById('kuis-main').classList.add('hidden');
+            document.getElementById('kuis-result').classList.remove('hidden');
+            document.getElementById('icon-hasil').innerText = "❌";
+            document.getElementById('icon-hasil').className = "w-16 h-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner";
+            document.getElementById('judul-hasil').innerText = "Nyawa Habis (Game Over)!";
+            document.getElementById('pesan-hasil').innerText = "Jangan menyerah, ayo coba lagi dan lebih teliti!";
+            document.getElementById('skor-akhir-val').innerText = "0";
+        }
+
         function selesaikanKuis() {
             let totalSkor = 0;
             databaseSoal.forEach((soal, i) => {
                 let jwb = jawabanSiswa[i];
                 if(jwb !== null && jwb !== "") {
-                    if(soal.tipe === 'pg') {
-                        if(Number(jwb) === soal.kunci) totalSkor += 2; // 50 soal * 2 = 100
-                    } else {
-                        if(String(jwb).toLowerCase() === String(soal.kunci).toLowerCase()) {
-                            totalSkor += 2;
-                        }
-                    }
+                    if(soal.tipe === 'pg' && Number(jwb) === soal.kunci) totalSkor += 2;
+                    if(soal.tipe === 'isian' && String(jwb).toLowerCase() === String(soal.kunci).toLowerCase()) totalSkor += 2;
                 }
             });
 
@@ -355,13 +430,16 @@
 
             document.getElementById('kuis-main').classList.add('hidden');
             document.getElementById('kuis-result').classList.remove('hidden');
+            document.getElementById('icon-hasil').innerText = "🏆";
+            document.getElementById('icon-hasil').className = "w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner";
+            document.getElementById('judul-hasil').innerText = "Kuis Telah Diselesaikan!";
+            document.getElementById('pesan-hasil').innerText = "Hebat! Kamu berhasil menaklukkan 50 soal petualangan.";
             document.getElementById('skor-akhir-val').innerText = totalSkor;
 
             document.getElementById('cert-nama-siswa').innerText = currentSiswa.nama;
             document.getElementById('cert-skor-val').innerText = totalSkor + " / 100";
         }
 
-        // Penyimpanan Lokal Real-Time untuk Sinkronisasi Dashboard Guru
         function simpanKeDatabaseLokal(siswa) {
             let dataSiswa = JSON.parse(localStorage.getItem('giga_math_siswa') || '[]');
             let existingIdx = dataSiswa.findIndex(s => s.nama.toLowerCase() === siswa.nama.toLowerCase());
