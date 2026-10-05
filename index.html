@@ -26,7 +26,7 @@
     <!-- Firebase SDK (Modular v9/v10 via CDN) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, doc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // Konfigurasi Firebase Anda
         const firebaseConfig = {
@@ -52,7 +52,7 @@
             lives: 3,
             shuffledQuestions: [],
             userAnswers: {},
-            lastQuizIndex: 0
+            lastResultCorrect: false
         };
 
         // Bank 50 Soal Matematika Kelas 5 Lengkap Bab 1 - Bab 6
@@ -370,17 +370,6 @@
             }
         ];
 
-        // Fungsi Text-to-Speech Suara Bahasa Indonesia
-        function speak(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                let utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'id-ID';
-                utterance.rate = 1.0;
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
         // Fungsi Sinkronisasi Data ke Firebase secara Realtime
         async function syncToFirebase() {
             if (!gameState.studentName) return;
@@ -399,7 +388,7 @@
         }
 
         // Render Antarmuka Berdasarkan State
-        window.render = function() {
+        function render() {
             const appDiv = document.getElementById('app');
             syncToFirebase();
 
@@ -410,10 +399,10 @@
                         <h1 class="text-3xl font-bold text-indigo-700 mb-2">PETUALANGAN MATEMATIKA</h1>
                         <p class="text-lg text-gray-600 mb-6 font-semibold">Matematika Kelas 5 SD/MI</p>
                         <div class="space-y-4 max-w-sm mx-auto">
-                            <button onclick="gameState.page='nameInput'; render();" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition transform hover:scale-105 cursor-pointer">
+                            <button onclick="window.goToNameInput()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition transform hover:scale-105 cursor-pointer">
                                 🚀 MULAI BERMAIN
                             </button>
-                            <button onclick="promptTeacherPassword()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition transform hover:scale-105 cursor-pointer">
+                            <button onclick="window.promptTeacherPassword()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition transform hover:scale-105 cursor-pointer">
                                 👨‍🏫 MODE GURU (REALTIME)
                             </button>
                         </div>
@@ -425,7 +414,7 @@
                         <h2 class="text-2xl font-bold text-indigo-700 mb-4">Masukkan Nama Siswa</h2>
                         <p class="text-gray-600 mb-6">Siapa nama petualang matematika hari ini?</p>
                         <input type="text" id="studentNameInput" placeholder="Ketik nama kamu di sini..." class="w-full p-4 border-2 border-indigo-300 rounded-xl mb-6 text-center text-lg focus:outline-none focus:border-indigo-600" value="${gameState.studentName}">
-                        <button onclick="saveName()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition cursor-pointer">
+                        <button onclick="window.saveName()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition cursor-pointer">
                             Lanjut Petualangan ➔
                         </button>
                     </div>
@@ -436,7 +425,7 @@
                         <div class="text-5xl mb-4">🌟</div>
                         <h2 class="text-2xl font-bold text-indigo-700 mb-2">Halo, ${gameState.studentName}!</h2>
                         <p class="text-gray-600 mb-6">Selamat datang di Petualangan Matematika Kelas 5. Jawab 50 soal seru, pelajari materinya, kumpulkan skor, dan jadilah jagoan matematika!</p>
-                        <button onclick="startLearning()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition cursor-pointer">
+                        <button onclick="window.startLearning()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition cursor-pointer">
                             📚 PELAJARI MATERI DULU
                         </button>
                     </div>
@@ -473,7 +462,7 @@
                             </div>
                         </div>
 
-                        <button onclick="startQuizFromMaterial()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition cursor-pointer">
+                        <button onclick="window.startQuizFromMaterial()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition cursor-pointer">
                             📝 MULAI KUIS 50 SOAL
                         </button>
                     </div>
@@ -495,14 +484,14 @@
 
                         <div class="space-y-3 mb-6">
                             ${q.options.map((opt, idx) => `
-                                <button onclick="answerQuestion(${idx})" class="w-full text-left p-3 rounded-xl border-2 border-indigo-100 hover:bg-indigo-50 hover:border-indigo-400 font-medium transition cursor-pointer">
+                                <button onclick="window.answerQuestion(${idx})" class="w-full text-left p-3 rounded-xl border-2 border-indigo-100 hover:bg-indigo-50 hover:border-indigo-400 font-medium transition cursor-pointer">
                                     <span class="font-bold mr-2 text-indigo-600">${['A', 'B', 'C', 'D'][idx]}.</span>${opt}
                                 </button>
                             `).join('')}
                         </div>
 
                         <div class="text-center">
-                            <button onclick="returnToMaterial()" class="text-xs bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-lg shadow transition cursor-pointer">
+                            <button onclick="window.returnToMaterial()" class="text-xs bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-lg shadow transition cursor-pointer">
                                 📚 KEMBALI KE MATERI
                             </button>
                         </div>
@@ -524,7 +513,7 @@
                             <p>${q.explanation}</p>
                         </div>
 
-                        <button onclick="nextQuestion()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition cursor-pointer">
+                        <button onclick="window.nextQuestion()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition cursor-pointer">
                             SOAL BERIKUTNYA ➔
                         </button>
                     </div>
@@ -536,10 +525,10 @@
                         <h2 class="text-2xl font-bold text-red-600">NYAWA HABIS!</h2>
                         <p class="text-gray-600 mb-6">Jangan berkecil hati, ${gameState.studentName}. Yuk pelajari materinya lagi agar semakin pintar!</p>
                         <div class="space-y-3">
-                            <button onclick="gameState.page='material'; render();" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-xl shadow transition cursor-pointer">
+                            <button onclick="window.goToMaterial()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-xl shadow transition cursor-pointer">
                                 📚 PELAJARI MATERI KEMBALI
                             </button>
-                            <button onclick="restartQuiz()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow transition cursor-pointer">
+                            <button onclick="window.restartQuiz()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow transition cursor-pointer">
                                 🔄 ULANGI KUIS DARI AWAL
                             </button>
                         </div>
@@ -550,91 +539,47 @@
                     <div class="bg-white p-8 rounded-2xl shadow-xl text-center border-4 border-indigo-300">
                         <div class="text-5xl mb-3">🎉</div>
                         <h2 class="text-2xl font-bold text-indigo-700 mb-2">KUIS SELESAI!</h2>
-                        <p class="text-gray-600 mb-4">Selamat, ${gameState.studentName}! Kamu telah menyelesaikan 50 soal.</p>
-                        
-                        <div class="bg-indigo-50 p-4 rounded-xl mb-6 text-indigo-900 font-semibold space-y-1">
-                            <p>Skor Kamu: <span class="text-2xl text-indigo-700">${gameState.score}</span> / 1000</p>
-                            <p>Jawaban Benar: ${gameState.score / 20} dari 50 soal</p>
-                            <p>Jawaban Salah: ${50 - (gameState.score / 20)}</p>
-                        </div>
-
-                        <div class="space-y-3">
-                            <button onclick="gameState.page='certificate'; render();" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow transition cursor-pointer">
-                                🏆 LIHAT SERTIFIKAT PENGHARGAAN
-                            </button>
-                            <button onclick="restartQuiz()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow transition cursor-pointer">
-                                🔄 ULANGI KUIS
-                            </button>
-                        </div>
-                    </div>
-                `;
-            } else if (gameState.page === 'certificate') {
-                const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-                appDiv.innerHTML = `
-                    <div class="bg-white p-6 rounded-2xl shadow-2xl border-8 border-amber-400 text-center relative">
-                        <h3 class="text-xs uppercase tracking-widest text-gray-500 font-bold mb-1">Sertifikat Penghargaan Resmi</h3>
-                        <h1 class="text-2xl font-bold text-indigo-800 mb-2 font-serif">SERTIFIKAT PENGHARGAAN</h1>
-                        <p class="text-xs text-gray-600 mb-3">Diberikan kepada:</p>
-                        <h2 class="text-2xl font-bold text-indigo-600 border-b-2 border-indigo-200 pb-1 inline-block px-6 mb-3">${gameState.studentName}</h2>
-                        <p class="text-xs text-gray-600 mb-3">atas keberhasilannya menyelesaikan</p>
-                        <h4 class="font-bold text-gray-800 text-sm mb-3">"PETUALANGAN MATEMATIKA KELAS 5 SD/MI"</h4>
-                        
-                        <div class="bg-indigo-50 p-3 rounded-lg text-xs text-indigo-900 mb-4 max-w-xs mx-auto space-y-1">
-                            <p>Skor Total: <b>${gameState.score} / 1000</b></p>
-                            <p>Jawaban Benar: <b>${gameState.score / 20} dari 50 soal</b></p>
-                            <p>Tanggal: <b>${today}</b></p>
-                        </div>
-
-                        <div class="mt-6 pt-3 border-t border-gray-200 text-xs text-gray-600">
-                            <p>Pengembang</p>
-                            <p class="font-bold text-indigo-700">Giga Inovation</p>
-                            <p>081329200985</p>
-                        </div>
-
-                        <div class="mt-6">
-                            <button onclick="gameState.page='finished'; render();" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-xl shadow text-sm cursor-pointer">
-                                ↩ Kembali ke Hasil
-                            </button>
-                        </div>
+                        <p class="text-gray-600 mb-4">Luar biasa, ${gameState.studentName}! Kamu telah menyelesaikan 50 soal matematika.</p>
+                        <div class="text-2xl font-bold text-emerald-600 mb-6">Skor Akhir: ${gameState.score}</div>
+                        <button onclick="window.restartQuiz()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow transition cursor-pointer">
+                            🔄 MAIN LAGI DARI AWAL
+                        </button>
                     </div>
                 `;
             } else if (gameState.page === 'teacherDashboard') {
                 appDiv.innerHTML = `
                     <div class="bg-white p-6 rounded-2xl shadow-xl border-4 border-emerald-300">
                         <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-xl font-bold text-emerald-700">👨‍🏫 Mode Guru (Realtime Monitoring)</h2>
-                            <button onclick="gameState.page='home'; render();" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded-lg text-xs font-bold cursor-pointer">Kembali</button>
+                            <h2 class="text-xl font-bold text-emerald-700">👨‍🏫 Dashboard Realtime Guru</h2>
+                            <button onclick="window.goHome()" class="text-xs bg-gray-500 text-white py-1 px-3 rounded-lg">Keluar</button>
                         </div>
-                        <p class="text-xs text-gray-500 mb-4">Menampilkan progres siswa yang sedang mengerjakan game secara langsung dari Firebase.</p>
-                        <div id="studentListContainer" class="space-y-3 max-h-[60vh] overflow-y-auto">
-                            <p class="text-sm text-gray-500 text-center py-4">Memuat data siswa...</p>
+                        <p class="text-xs text-gray-500 mb-4">Memantau progres siswa secara langsung melalui Firebase.</p>
+                        <div id="studentListContainer" class="space-y-2 max-h-60 overflow-y-auto mb-4 text-left text-sm">
+                            <p class="text-gray-500 italic">Memuat data siswa...</p>
                         </div>
+                        <button onclick="window.loadTeacherData()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-xl text-sm">
+                            🔄 Refresh Data Siswa
+                        </button>
                     </div>
                 `;
-                listenRealtimeStudents();
+                window.loadTeacherData();
             }
-        };
+        }
 
-        // Fungsi Password Mode Guru
-        window.promptTeacherPassword = function() {
-            const pwd = prompt("Masukkan Password Guru:");
-            if (pwd === "1234") {
-                gameState.page = 'teacherDashboard';
-                render();
-            } else if (pwd !== null) {
-                alert("Password salah! Silakan coba lagi.");
-            }
+        // Fungsi Aksi Game yang Didaftarkan ke Window Global
+        window.goToNameInput = function() {
+            gameState.page = 'nameInput';
+            render();
         };
 
         window.saveName = function() {
-            const nameInput = document.getElementById('studentNameInput').value.trim();
-            if (!nameInput) {
-                alert("Silakan masukkan nama kamu terlebih dahulu!");
+            const input = document.getElementById('studentNameInput');
+            if (!input || !input.value.trim()) {
+                alert('Silakan masukkan nama Anda terlebih dahulu!');
                 return;
             }
-            gameState.studentName = nameInput;
+            gameState.studentName = input.value.trim();
             gameState.page = 'welcome';
-            speak(`Halo, ${gameState.studentName}! Selamat datang di Petualangan Matematika Kelas 5.`);
             render();
         };
 
@@ -644,32 +589,33 @@
         };
 
         window.startQuizFromMaterial = function() {
-            gameState.shuffledQuestions = [...allQuestions].sort(() => 0.5 - Math.random());
+            gameState.shuffledQuestions = [...allQuestions].sort(() => Math.random() - 0.5);
             gameState.currentQuestionIndex = 0;
             gameState.score = 0;
             gameState.lives = 3;
             gameState.page = 'quiz';
-            speak(`Baik, ${gameState.studentName}. Mari kita mulai kuis matematika.`);
             render();
         };
 
         window.returnToMaterial = function() {
-            gameState.lastQuizIndex = gameState.currentQuestionIndex;
+            gameState.page = 'material';
+            render();
+        };
+
+        window.goToMaterial = function() {
             gameState.page = 'material';
             render();
         };
 
         window.answerQuestion = function(selectedIndex) {
             const q = gameState.shuffledQuestions[gameState.currentQuestionIndex];
-            const isCorrect = (selectedIndex === q.correct);
+            const isCorrect = selectedIndex === q.correct;
             gameState.lastResultCorrect = isCorrect;
 
             if (isCorrect) {
                 gameState.score += 20;
-                speak(`Benar, ${gameState.studentName}! Hebat sekali! Jawaban kamu tepat.`);
             } else {
                 gameState.lives -= 1;
-                speak(`Belum tepat, ${gameState.studentName}. Yuk, pelajari kembali cara menghitungnya.`);
             }
 
             gameState.page = 'feedback';
@@ -679,63 +625,70 @@
         window.nextQuestion = function() {
             if (gameState.lives <= 0) {
                 gameState.page = 'gameOver';
-                speak(`Sayang sekali, nyawa kamu habis. Semangat ya, ${gameState.studentName}!`);
-                render();
-                return;
-            }
-
-            gameState.currentQuestionIndex++;
-            if (gameState.currentQuestionIndex >= gameState.shuffledQuestions.length) {
-                gameState.page = 'finished';
-                speak(`Selamat, ${gameState.studentName}! Kamu telah menyelesaikan 50 soal dengan skor ${gameState.score}.`);
             } else {
-                gameState.page = 'quiz';
-                speak(`Bagus, ${gameState.studentName}. Sekarang kita lanjut ke soal berikutnya.`);
+                gameState.currentQuestionIndex++;
+                if (gameState.currentQuestionIndex >= gameState.shuffledQuestions.length) {
+                    gameState.page = 'finished';
+                } else {
+                    gameState.page = 'quiz';
+                }
             }
             render();
         };
 
         window.restartQuiz = function() {
-            gameState.shuffledQuestions = [...allQuestions].sort(() => 0.5 - Math.random());
-            gameState.currentQuestionIndex = 0;
-            gameState.score = 0;
-            gameState.lives = 3;
-            gameState.page = 'quiz';
+            gameState.page = 'home';
             render();
         };
 
-        // Realtime Listener untuk Mode Guru
-        function listenRealtimeStudents() {
-            onSnapshot(collection(db, "artifacts", "coba-673353", "public", "data", "students_progress"), (snapshot) => {
-                const container = document.getElementById('studentListContainer');
-                if (!container) return;
-                
-                if (snapshot.empty) {
-                    container.innerHTML = `<p class="text-sm text-gray-500 text-center py-4">Belum ada siswa yang aktif bermain.</p>`;
+        window.goHome = function() {
+            gameState.page = 'home';
+            render();
+        };
+
+        window.promptTeacherPassword = function() {
+            let pass = prompt("Masukkan Password Guru:");
+            if (pass === "giga123" || pass === "guru") {
+                gameState.page = 'teacherDashboard';
+                render();
+            } else if (pass !== null) {
+                alert("Password salah!");
+            }
+        };
+
+        window.loadTeacherData = async function() {
+            const container = document.getElementById('studentListContainer');
+            if (!container) return;
+            try {
+                const querySnapshot = await getDocs(collection(db, "artifacts", "coba-673353", "public", "data", "students_progress"));
+                if (querySnapshot.empty) {
+                    container.innerHTML = `<p class="text-gray-500 italic">Belum ada data siswa yang masuk.</p>`;
                     return;
                 }
-
                 let html = '';
-                snapshot.forEach((docSnap) => {
-                    const data = docSnap.data();
+                querySnapshot.forEach((docSnap) => {
+                    let data = docSnap.data();
                     html += `
-                        <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200 flex justify-between items-center text-sm">
+                        <div class="p-3 bg-emerald-50 rounded-lg border border-emerald-200 flex justify-between items-center">
                             <div>
-                                <p class="font-bold text-emerald-900">👤 ${data.name}</p>
-                                <p class="text-xs text-gray-600">Soal ke: <b>${data.currentQuestion} / 50</b> | Nyawa: <b>${'❤'.repeat(data.lives || 0)}</b></p>
+                                <p class="font-bold text-emerald-900">${data.name || 'Tanpa Nama'}</p>
+                                <p class="text-xs text-emerald-700">Status: ${data.status} | Soal ke-${data.currentQuestion || 1}</p>
                             </div>
                             <div class="text-right">
-                                <span class="bg-emerald-600 text-white font-bold py-1 px-3 rounded-lg text-xs">Skor: ${data.score}</span>
-                                <p class="text-[10px] text-gray-400 mt-1">Status: ${data.status}</p>
+                                <p class="font-bold text-emerald-800">Skor: ${data.score || 0}</p>
+                                <p class="text-xs text-red-500">Nyawa: ${'❤️'.repeat(data.lives || 0)}</p>
                             </div>
                         </div>
                     `;
                 });
                 container.innerHTML = html;
-            });
-        }
+            } catch (e) {
+                console.error(e);
+                container.innerHTML = `<p class="text-red-500 text-xs">Gagal memuat data dari Firebase.</p>`;
+            }
+        };
 
-        // Render Pertama Kali
+        // Jalankan render awal saat halaman dimuat
         render();
     </script>
 </body>
