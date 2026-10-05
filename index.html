@@ -11,10 +11,10 @@
         body { font-family: 'Poppins', sans-serif; }
     </style>
 </head>
-<body class="bg-indigo-50 min-h-screen flex flex-col justify-between text-gray-800">
+<body class="bg-indigo-50 min-h-screen flex flex-col justify-between text-gray-800 py-6">
 
-    <!-- Container Utama -->
-    <div id="app" class="max-w-3xl mx-auto w-full p-4 flex-grow flex flex-col justify-center">
+    <!-- Container Utama dengan Dukungan Scroll agar Tombol Tidak Terpotong -->
+    <div id="app" class="max-w-3xl mx-auto w-full p-4 flex-grow flex flex-col justify-center my-auto">
         <!-- Konten Dinamis Dimuat Lewat JavaScript -->
     </div>
 
@@ -26,7 +26,7 @@
     <!-- Firebase SDK (Modular v9/v10 via CDN) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, doc, setDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // Konfigurasi Firebase dari screenshot Anda
         const firebaseConfig = {
@@ -413,7 +413,7 @@
                             <button onclick="gameState.page='nameInput'; render();" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition transform hover:scale-105">
                                 🚀 MULAI BERMAIN
                             </button>
-                            <button onclick="gameState.page='teacherDashboard'; render();" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition transform hover:scale-105">
+                            <button onclick="promptTeacherPassword()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition transform hover:scale-105">
                                 👨‍🏫 MODE GURU (REALTIME)
                             </button>
                         </div>
@@ -615,6 +615,17 @@
             }
         };
 
+        // Fungsi Password Mode Guru
+        window.promptTeacherPassword = function() {
+            const pwd = prompt("Masukkan Password Guru:");
+            if (pwd === "1234") {
+                gameState.page = 'teacherDashboard';
+                render();
+            } else if (pwd !== null) {
+                alert("Password salah! Silakan coba lagi.");
+            }
+        };
+
         window.saveName = function() {
             const nameInput = document.getElementById('studentNameInput').value.trim();
             if (!nameInput) {
@@ -633,7 +644,6 @@
         };
 
         window.startQuizFromMaterial = function() {
-            // Acak dan ambil 50 soal penuh
             gameState.shuffledQuestions = [...allQuestions].sort(() => 0.5 - Math.random());
             gameState.currentQuestionIndex = 0;
             gameState.score = 0;
@@ -712,7 +722,7 @@
                         <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200 flex justify-between items-center text-sm">
                             <div>
                                 <p class="font-bold text-emerald-900">👤 ${data.name}</p>
-                                <p class="text-xs text-gray-600">Soal ke: <b>${data.currentQuestion} / 50</b> | Nyawa: <b>${'❤️'.repeat(data.lives || 0)}</b></p>
+                                <p class="text-xs text-gray-600">Soal ke: <b>${data.currentQuestion} / 50</b> | Nyawa: <b>${'❤️️'.repeat(data.lives || 0)}</b></p>
                             </div>
                             <div class="text-right">
                                 <span class="bg-emerald-600 text-white font-bold py-1 px-3 rounded-lg text-xs">Skor: ${data.score}</span>
