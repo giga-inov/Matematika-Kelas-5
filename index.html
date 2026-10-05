@@ -3,862 +3,405 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Petualangan Matematika Kelas 5</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#eef2ff',
-                            100: '#e0e7ff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <title>Petualangan Matematika Kls 5 - Giga Inovation</title>
+    <!-- Google Fonts & Tailwind CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         body { font-family: 'Poppins', sans-serif; }
-        .hide { display: none !important; }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-        }
-        .animate-float { animation: float 3s ease-in-out infinite; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50 min-h-screen text-slate-800 flex flex-col justify-between">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
 
-    <!-- Top Navigation Header -->
-    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-indigo-100">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="app.switchTab('home')">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-lg shadow-indigo-200">
-                    <i class="fa-solid fa-graduation-cap text-lg"></i>
-                </div>
+    <!-- NAVBAR ATAS -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="pindahTab('beranda')">
+                <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xl shadow-md">🎓</div>
                 <div>
-                    <h1 class="font-bold text-lg text-slate-900 leading-tight">Matematika Kls 5</h1>
-                    <p class="text-xs text-indigo-600 font-medium">Kurikulum Merdeka</p>
+                    <h1 class="font-bold text-base text-slate-900">Matematika Kls 5</h1>
+                    <p class="text-xs text-slate-500">Kurikulum Merdeka</p>
                 </div>
             </div>
-            
-            <nav class="hidden md:flex items-center space-x-1">
-                <button onclick="app.switchTab('home')" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium transition hover:bg-indigo-50 text-slate-600 hover:text-indigo-600" data-target="home"><i class="fa-solid fa-house mr-2"></i>Beranda</button>
-                <button onclick="app.switchTab('modules')" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium transition hover:bg-indigo-50 text-slate-600 hover:text-indigo-600" data-target="modules"><i class="fa-solid fa-book-open mr-2"></i>Materi</button>
-                <button onclick="app.switchTab('games')" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium transition hover:bg-indigo-50 text-slate-600 hover:text-indigo-600" data-target="games"><i class="fa-solid fa-gamepad mr-2"></i>Kuis & Game</button>
-                <button onclick="app.switchTab('certificate')" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium transition hover:bg-indigo-50 text-slate-600 hover:text-indigo-600" data-target="certificate"><i class="fa-solid fa-award mr-2"></i>Sertifikat</button>
-                <button onclick="app.switchTab('teacher')" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium transition hover:bg-indigo-50 text-slate-600 hover:text-indigo-600" data-target="teacher"><i class="fa-solid fa-chalkboard-user mr-2"></i>Dashboard Guru</button>
+            <!-- Menu Navigasi -->
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+                <button onclick="pindahTab('beranda')" class="text-slate-600 hover:text-indigo-600 transition cursor-pointer">Beranda</button>
+                <button onclick="pindahTab('materi')" class="text-slate-600 hover:text-indigo-600 transition cursor-pointer">Materi</button>
+                <button onclick="pindahTab('kuis')" class="text-indigo-600 font-semibold transition cursor-pointer">Kuis & Game</button>
+                <button onclick="pindahTab('sertifikat')" class="text-slate-600 hover:text-indigo-600 transition cursor-pointer">Sertifikat</button>
+                <button onclick="pindahTab('dashboard')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition cursor-pointer">Dashboard Guru</button>
             </nav>
-
-            <div class="flex items-center space-x-3">
-                <div id="user-badge" class="bg-indigo-50 border border-indigo-200 text-indigo-700 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center shadow-sm">
-                    <i class="fa-solid fa-user-circle mr-1.5 text-sm"></i>
-                    <span id="current-username-display">Siswa</span>
-                </div>
-                <button onclick="app.openLoginModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-semibold transition shadow-md shadow-indigo-200">
-                    <i class="fa-solid fa-right-to-bracket mr-1"></i> Masuk
-                </button>
-            </div>
         </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="flex-grow max-w-7xl mx-auto w-full p-4 md:p-6 mb-16">
+    <!-- KONTEN UTAMA -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow">
 
-        <!-- 1. HOME VIEW -->
-        <section id="view-home" class="space-y-8">
-            <div class="relative overflow-hidden bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 rounded-3xl p-6 md:p-12 text-white shadow-xl shadow-indigo-100 flex flex-col md:flex-row items-center justify-between">
-                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
-                <div class="relative z-10 max-w-xl space-y-4 mb-6 md:mb-0">
-                    <span class="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">Petualangan Seru Kelas 5</span>
-                    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">Jelajahi Dunia Matematika dengan Menyenangkan!</h2>
-                    <p class="text-indigo-100 text-sm md:text-base leading-relaxed">Belajar pecahan, bangun ruang, volume, dan data jadi lebih mudah melalui kuis interaktif, materi visual, dan tantangan seru.</p>
-                    <div class="flex flex-wrap gap-3 pt-2">
-                        <button onclick="app.switchTab('modules')" class="bg-white text-indigo-600 font-semibold px-6 py-3 rounded-2xl shadow-lg hover:bg-indigo-50 transition transform hover:-translate-y-0.5">Mulai Belajar</button>
-                        <button onclick="app.switchTab('games')" class="bg-indigo-500/50 hover:bg-indigo-500/70 text-white border border-white/20 font-semibold px-6 py-3 rounded-2xl backdrop-blur-md transition">Mainkan Kuis</button>
-                    </div>
+        <!-- 1. HALAMAN BERANDA -->
+        <div id="tab-beranda" class="space-y-6 text-center py-12">
+            <div class="max-w-2xl mx-auto space-y-4">
+                <span class="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-xs font-semibold">Belajar Tidak Harus Membosankan</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900">Petualangan Matematika Kelas 5</h2>
+                <p class="text-slate-600 text-sm md:text-base">Ubah soal latihan menjadi petualangan game seru! Kerjakan 50 soal kuis pilihan ganda, isian, dan uraian, raih skor tinggi, dan pantau progresmu.</p>
+                <div class="pt-4 flex justify-center gap-4">
+                    <button onclick="pindahTab('kuis')" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg transition cursor-pointer">Mulai Kuis Sekarang 🚀</button>
+                    <button onclick="pindahTab('dashboard')" class="px-6 py-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold rounded-xl transition cursor-pointer">Dashboard Guru 📊</button>
                 </div>
-                <div class="relative z-10 flex justify-center animate-float">
-                    <div class="w-48 h-48 md:w-64 md:h-64 bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/20 flex flex-col items-center justify-center text-center shadow-2xl">
-                        <i class="fa-solid fa-calculator text-5xl md:text-6xl text-amber-300 mb-4"></i>
-                        <span class="font-bold text-lg md:text-xl">Siap Berhitung?</span>
-                        <span class="text-xs text-indigo-200 mt-1">Selesaikan semua level & raih sertifikatmu!</span>
-                    </div>
+            </div>
+        </div>
+
+        <!-- 2. HALAMAN MATERI -->
+        <div id="tab-materi" class="hidden space-y-6">
+            <h2 class="text-2xl font-bold text-slate-900">Materi Pembelajaran Kelas 5</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-6 bg-white border border-slate-200 rounded-2xl shadow-xs">
+                    <h3 class="font-bold text-indigo-600 text-lg mb-2">Modul 1: Bilangan Cacah Sampai 100.000</h3>
+                    <p class="text-sm text-slate-600">Mempelajari nilai tempat, membaca lambang bilangan, perbandingan, serta operasi hitung bilangan besar.</p>
+                </div>
+                <div class="p-6 bg-white border border-slate-200 rounded-2xl shadow-xs">
+                    <h3 class="font-bold text-indigo-600 text-lg mb-2">Modul 2: KPK dan FPB</h3>
+                    <p class="text-sm text-slate-600">Memahami kelipatan, faktor prima, cara menentukan KPK dan FPB beserta penerapannya dalam kehidupan sehari-hari.</p>
+                </div>
+                <div class="p-6 bg-white border border-slate-200 rounded-2xl shadow-xs">
+                    <h3 class="font-bold text-indigo-600 text-lg mb-2">Modul 3: Pecahan</h3>
+                    <p class="text-sm text-slate-600">Pecahan senilai, membandingkan pecahan, operasi penjumlahan dan pengurangan pecahan.</p>
+                </div>
+                <div class="p-6 bg-white border border-slate-200 rounded-2xl shadow-xs">
+                    <h3 class="font-bold text-indigo-600 text-lg mb-2">Modul 4: Evaluasi & Uraian</h3>
+                    <p class="text-sm text-slate-600">Latihan soal cerita komprehensif untuk persiapan Asesmen Sumatif Tengah Semester (ASTS).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. HALAMAN KUIS 50 SOAL (TERINTEGRASI MONITORING) -->
+        <div id="tab-kuis" class="hidden max-w-3xl mx-auto bg-white border border-slate-200 rounded-2xl shadow-sm p-6 md:p-8 space-y-6">
+            
+            <!-- Form Registrasi Masuk Kuis -->
+            <div id="kuis-reg" class="space-y-4 text-center py-4">
+                <h3 class="text-2xl font-bold text-slate-900">🎮 Mulai Petualangan Kuis (50 Soal)</h3>
+                <p class="text-sm text-slate-500">Masukkan nama dan kelasmu agar skor tercatat di Dashboard Guru.</p>
+                <div class="max-w-sm mx-auto space-y-3 text-left pt-2">
+                    <input type="text" id="reg-nama" placeholder="Nama Lengkap Siswa..." class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-indigo-500 text-sm">
+                    <input type="text" id="reg-kelas" placeholder="Kelas / Absen (Cth: Kelas 5 / 12)..." class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-indigo-500 text-sm">
+                    <button onclick="mulaiKuisAktif()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow transition cursor-pointer">Mulai Tantangan 🎯</button>
                 </div>
             </div>
 
-            <!-- Feature Cards Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div onclick="app.switchTab('modules')" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition cursor-pointer group">
-                    <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-indigo-600 group-hover:text-white transition">
-                        <i class="fa-solid fa-book-bookmark text-xl"></i>
-                    </div>
-                    <h3 class="font-bold text-slate-900 mb-1">Materi Interaktif</h3>
-                    <p class="text-xs text-slate-500">Pelajari konsep dasar matematika dengan penjelasan ringkas & ilustrasi.</p>
+            <!-- Area Soal Kuis Interaktif -->
+            <div id="kuis-main" class="hidden space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <span id="progress-soal" class="text-xs font-bold px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full">Soal 1 dari 50</span>
+                    <span class="text-xs font-medium text-slate-500">Siswa: <strong id="lbl-nama-siswa" class="text-slate-800"></strong></span>
                 </div>
-                <div onclick="app.switchTab('games')" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition cursor-pointer group">
-                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-600 group-hover:text-white transition">
-                        <i class="fa-solid fa-puzzle-piece text-xl"></i>
-                    </div>
-                    <h3 class="font-bold text-slate-900 mb-1">Kuis & Game</h3>
-                    <p class="text-xs text-slate-500">Uji kemampuanmu lewat latihan soal bernilai poin & leaderboard.</p>
-                </div>
-                <div onclick="app.switchTab('certificate')" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition cursor-pointer group">
-                    <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-amber-600 group-hover:text-white transition">
-                        <i class="fa-solid fa-medal text-xl"></i>
-                    </div>
-                    <h3 class="font-bold text-slate-900 mb-1">Sertifikat Kelulusan</h3>
-                    <p class="text-xs text-slate-500">Dapatkan sertifikat resmi setelah menyelesaikan modul & kuis.</p>
-                </div>
-                <div onclick="app.switchTab('teacher')" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition cursor-pointer group">
-                    <div class="w-12 h-12 bg-violet-50 text-violet-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-violet-600 group-hover:text-white transition">
-                        <i class="fa-solid fa-chart-line text-xl"></i>
-                    </div>
-                    <h3 class="font-bold text-slate-900 mb-1">Dashboard Guru</h3>
-                    <p class="text-xs text-slate-500">Pantau progres belajar dan nilai siswa secara real-time.</p>
-                </div>
-            </div>
-        </section>
 
-        <!-- 2. MODULES VIEW -->
-        <section id="view-modules" class="space-y-6 hide">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between pb-4 border-b border-slate-200">
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-900">Materi Pembelajaran Kelas 5</h2>
-                    <p class="text-sm text-slate-500">Pilih bab materi yang ingin dipelajari hari ini.</p>
+                <div class="space-y-3">
+                    <div id="box-bacaan" class="hidden p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs md:text-sm text-slate-600 italic"></div>
+                    <h3 id="teks-soal" class="text-base md:text-lg font-semibold text-slate-900 leading-relaxed"></h3>
+                    <div id="container-opsi" class="space-y-2 pt-2"></div>
                 </div>
-                <div class="mt-3 md:mt-0 flex gap-2">
-                    <span id="modules-completed-counter" class="bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1.5 rounded-xl flex items-center">
-                        <i class="fa-solid fa-check-circle mr-1.5"></i> Selesai: 0 / 4 Modul
-                    </span>
+
+                <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+                    <button onclick="soalPrev()" id="btn-prev" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition cursor-pointer">← Sebelumnya</button>
+                    <button onclick="soalNext()" id="btn-next" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-medium transition shadow cursor-pointer">Berikutnya →</button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="modules-grid">
-                <!-- Module Cards populated via JS -->
-            </div>
-        </section>
-
-        <!-- 2.1 MODULE DETAIL READER VIEW -->
-        <section id="view-module-detail" class="space-y-6 hide">
-            <button onclick="app.switchTab('modules')" class="bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-xl text-sm font-medium transition flex items-center shadow-sm">
-                <i class="fa-solid fa-arrow-left mr-2"></i> Kembali ke Daftar Materi
-            </button>
-            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100 space-y-6">
-                <div id="module-detail-content" class="prose max-w-none text-slate-700 space-y-4">
-                    <!-- Dynamic Module Content -->
+            <!-- Area Selesai / Hasil Kuis -->
+            <div id="kuis-result" class="hidden text-center space-y-6 py-6">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">🏆</div>
+                <h3 class="text-2xl font-bold text-slate-900">Kuis Telah Diselesaikan!</h3>
+                <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl max-w-xs mx-auto space-y-1">
+                    <div class="text-xs text-slate-500">Skor Akhir Kamu</div>
+                    <div id="skor-akhir-val" class="text-4xl font-extrabold text-indigo-600">0</div>
+                    <div id="predikat-val" class="text-xs font-semibold text-emerald-600 pt-1">Luar Biasa!</div>
                 </div>
-                <div class="pt-6 border-t border-slate-100 flex justify-between items-center">
-                    <span id="module-status-badge" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-amber-50 text-amber-700">Belum Selesai</span>
-                    <button onclick="app.markModuleComplete()" id="btn-complete-module" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition shadow-md shadow-indigo-100">
-                        Tandai Selesai & Lanjut
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3. GAMES & QUIZ VIEW -->
-        <section id="view-games" class="space-y-6 hide">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between pb-4 border-b border-slate-200">
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-900">Kuis & Tantangan Matematika</h2>
-                    <p class="text-sm text-slate-500">Uji kemampuanmu dan kumpulkan poin setinggi-tingginya!</p>
-                </div>
-                <div class="mt-3 md:mt-0 flex items-center space-x-2">
-                    <span class="bg-amber-100 text-amber-700 text-xs font-semibold px-3 py-1.5 rounded-xl flex items-center">
-                        <i class="fa-solid fa-star text-amber-500 mr-1.5"></i> Poin Anda: <span id="user-score-display" class="ml-1 font-bold">0</span>
-                    </span>
+                <div class="flex justify-center gap-3">
+                    <button onclick="pindahTab('sertifikat')" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-sm shadow transition cursor-pointer">📜 Lihat Sertifikat</button>
+                    <button onclick="pindahTab('dashboard')" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm shadow transition cursor-pointer">📊 Cek Dashboard Guru</button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Quiz Card 1 -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition">
-                    <div>
-                        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4">
-                            <i class="fa-solid fa-calculator text-xl"></i>
-                        </div>
-                        <h3 class="font-bold text-lg text-slate-900 mb-1">Kuis Bilangan Pecahan</h3>
-                        <p class="text-xs text-slate-500 mb-4">Latihan soal operasi hitung penjumlahan, pengurangan, dan perkalian pecahan.</p>
-                    </div>
-                    <button onclick="app.startQuiz('pecahan')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-sm font-semibold transition shadow-md shadow-indigo-100">
-                        Mulai Kuis <i class="fa-solid fa-arrow-right ml-1"></i>
-                    </button>
-                </div>
+        </div>
 
-                <!-- Quiz Card 2 -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition">
-                    <div>
-                        <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4">
-                            <i class="fa-solid fa-cube text-xl"></i>
-                        </div>
-                        <h3 class="font-bold text-lg text-slate-900 mb-1">Kuis Volume & Bangun Ruang</h3>
-                        <p class="text-xs text-slate-500 mb-4">Uji pemahaman tentang volume kubus, balok, serta jaring-jaring bangun ruang.</p>
-                    </div>
-                    <button onclick="app.startQuiz('volume')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl text-sm font-semibold transition shadow-md shadow-emerald-100">
-                        Mulai Kuis <i class="fa-solid fa-arrow-right ml-1"></i>
-                    </button>
+        <!-- 4. HALAMAN SERTIFIKAT -->
+        <div id="tab-sertifikat" class="hidden text-center space-y-6 max-w-xl mx-auto py-8">
+            <h2 class="text-2xl font-bold text-slate-900">Sertifikat Penghargaan</h2>
+            <div id="sertifikat-card" class="bg-white border-4 border-amber-400 p-8 rounded-2xl shadow-xl text-left space-y-4">
+                <div class="text-center">
+                    <p class="text-xs font-bold text-slate-400 tracking-widest uppercase">Giga Inovation - 081329200985</p>
+                    <h3 class="text-xl font-extrabold text-indigo-900 mt-1">SERTIFIKAT KELULUSAN</h3>
                 </div>
-
-                <!-- Quiz Card 3 -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition">
-                    <div>
-                        <div class="w-12 h-12 bg-violet-50 text-violet-600 rounded-xl flex items-center justify-center mb-4">
-                            <i class="fa-solid fa-chart-pie text-xl"></i>
-                        </div>
-                        <h3 class="font-bold text-lg text-slate-900 mb-1">Kuis Data & Statistika</h3>
-                        <p class="text-xs text-slate-500 mb-4">Latihan membaca diagram batang, tabel, dan menghitung rata-rata (mean).</p>
-                    </div>
-                    <button onclick="app.startQuiz('data')" class="w-full bg-violet-600 hover:bg-violet-700 text-white py-2.5 rounded-xl text-sm font-semibold transition shadow-md shadow-violet-100">
-                        Mulai Kuis <i class="fa-solid fa-arrow-right ml-1"></i>
-                    </button>
+                <p class="text-xs text-center text-slate-500">Diberikan secara resmi kepada:</p>
+                <h2 id="cert-nama-siswa" class="text-center text-2xl font-bold text-indigo-600 underline">Belum Ada Nama</h2>
+                <p class="text-xs text-center text-slate-600">Telah sukses merampungkan tantangan kuis 50 soal <strong>"Petualangan Matematika Kelas 5"</strong>.</p>
+                <div class="flex justify-between items-center pt-6 border-t border-slate-100 text-xs text-slate-500">
+                    <div>Pencapaian Skor: <strong id="cert-skor-val" class="text-slate-800">0 / 100</strong></div>
+                    <div class="text-right">Disahkan Oleh:<br><strong>Giga Inovation</strong></div>
                 </div>
             </div>
-        </section>
+            <button onclick="window.print()" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-xl text-sm transition cursor-pointer">🖨️ Cetak / Unduh Sertifikat</button>
+        </div>
 
-        <!-- 3.1 ACTIVE QUIZ MODAL/VIEW -->
-        <section id="view-active-quiz" class="space-y-6 hide">
-            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100 max-w-2xl mx-auto space-y-6">
-                <div class="flex justify-between items-center border-b border-slate-100 pb-4">
-                    <div>
-                        <span id="quiz-category-badge" class="text-xs font-semibold px-3 py-1 rounded-full bg-indigo-50 text-indigo-700">Kuis Pecahan</span>
-                        <h3 id="quiz-question-counter" class="font-bold text-lg text-slate-900 mt-1">Soal 1 dari 5</h3>
-                    </div>
-                    <button onclick="app.switchTab('games')" class="text-slate-400 hover:text-slate-600">
-                        <i class="fa-solid fa-xmark text-xl"></i>
-                    </button>
-                </div>
-
-                <div class="space-y-4">
-                    <p id="quiz-question-text" class="text-base md:text-lg font-medium text-slate-800 leading-relaxed">Pertanyaan kuis akan dimuat di sini...</p>
-                    <div id="quiz-options-container" class="space-y-3">
-                        <!-- Options generated via JS -->
-                    </div>
-                </div>
-
-                <div class="pt-4 border-t border-slate-100 flex justify-between items-center">
-                    <span id="quiz-score-live" class="text-xs font-semibold text-slate-500">Poin: 0</span>
-                    <button onclick="app.nextQuizQuestion()" id="btn-next-question" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition shadow-md shadow-indigo-100 hide">
-                        Soal Selanjutnya <i class="fa-solid fa-arrow-right ml-1"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. CERTIFICATE VIEW -->
-        <section id="view-certificate" class="space-y-6 hide">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between pb-4 border-b border-slate-200">
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-900">Sertifikat Kelulusan Matematika</h2>
-                    <p class="text-sm text-slate-500">Unduh atau cetak sertifikat resmi pencapaian belajarmu.</p>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100 max-w-4xl mx-auto space-y-6">
-                <!-- Certificate Preview Box -->
-                <div id="certificate-preview-box" class="border-8 border-amber-400 bg-gradient-to-br from-amber-50/50 via-white to-yellow-50/30 p-8 md:p-12 text-center rounded-2xl relative shadow-inner space-y-6">
-                    <div class="absolute top-4 left-4 text-amber-300 text-3xl opacity-50"><i class="fa-solid fa-award"></i></div>
-                    <div class="absolute top-4 right-4 text-amber-300 text-3xl opacity-50"><i class="fa-solid fa-award"></i></div>
-                    
-                    <div class="space-y-2">
-                        <span class="text-xs font-extrabold tracking-widest uppercase text-amber-600">Sertifikat Penyelesaian Resmi</span>
-                        <h3 class="text-2xl md:text-4xl font-extrabold text-slate-900 font-serif">Sertifikat Prestasi</h3>
-                        <p class="text-xs text-slate-500">Diberikan dengan bangga kepada:</p>
-                    </div>
-
-                    <div class="py-2">
-                        <h4 id="cert-student-name" class="text-3xl md:text-4xl font-bold text-indigo-700 font-serif border-b-2 border-indigo-200 inline-block px-8 pb-1">Nama Siswa</h4>
-                    </div>
-
-                    <p class="text-xs md:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
-                        Atas keberhasilan menyelesaikan seluruh modul pembelajaran dan kuis 
-                        <strong>Petualangan Matematika Kelas 5 Kurikulum Merdeka</strong> dengan hasil yang sangat memuaskan.
-                    </p>
-
-                    <div class="pt-6 flex justify-between items-end border-t border-slate-200 mt-8 px-4">
-                        <div class="text-left">
-                            <p class="text-xs text-slate-500">Tanggal Terbit:</p>
-                            <p id="cert-date" class="text-xs font-semibold text-slate-800">-</p>
-                        </div>
-                        <div class="w-24 h-24 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shadow-sm border border-amber-300">
-                            <i class="fa-solid fa-stamp text-3xl"></i>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-xs text-slate-500">Pengembang & Validator:</p>
-                            <p class="text-xs font-semibold text-slate-800">Giga Inovation</p>
-                            <p class="text-[10px] text-slate-400">081329200985</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Actions -->
-                <div class="flex flex-wrap justify-center gap-3 pt-4">
-                    <button onclick="app.generateCertificate()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition shadow-md shadow-indigo-100 flex items-center">
-                        <i class="fa-solid fa-certificate mr-2"></i> Buat / Perbarui Sertifikat
-                    </button>
-                    <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition shadow-md flex items-center">
-                        <i class="fa-solid fa-print mr-2"></i> Cetak / Simpan PDF
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- 5. TEACHER DASHBOARD VIEW -->
-        <section id="view-teacher" class="space-y-6 hide">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between pb-4 border-b border-slate-200">
+        <!-- 5. HALAMAN DASHBOARD GURU (REAL-TIME SYNC) -->
+        <div id="tab-dashboard" class="hidden space-y-6">
+            <div class="flex justify-between items-center">
                 <div>
                     <h2 class="text-2xl font-bold text-slate-900">Dashboard Guru & Progres Siswa</h2>
-                    <p class="text-sm text-slate-500">Pantau aktivitas belajar siswa secara real-time dari database.</p>
+                    <p class="text-xs text-slate-500 mt-1">Pantau aktivitas belajar dan hasil kuis seluruh siswa secara real-time.</p>
                 </div>
-                <div class="mt-3 md:mt-0 flex gap-2">
-                    <span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-xl flex items-center">
-                        <i class="fa-solid fa-signal mr-1.5 animate-pulse"></i> Real-time Sync Active
-                    </span>
-                </div>
+                <button onclick="refreshDashboard()" class="px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-xl text-xs font-semibold transition cursor-pointer">🔄 Refresh Data</button>
             </div>
 
-            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100 space-y-6">
-                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div class="relative w-full md:w-72">
-                        <i class="fa-solid fa-search absolute left-3.5 top-3 text-slate-400 text-sm"></i>
-                        <input type="text" id="teacher-search-input" oninput="app.filterStudents()" placeholder="Cari nama siswa..." class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="app.refreshTeacherData()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition">
-                            <i class="fa-solid fa-rotate mr-1"></i> Refresh Data
-                        </button>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                                <th class="py-3 px-4">Nama Siswa</th>
-                                <th class="py-3 px-4">Modul Selesai</th>
-                                <th class="py-3 px-4">Poin Kuis</th>
-                                <th class="py-3 px-4">Sertifikat</th>
-                                <th class="py-3 px-4 text-right">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="teacher-students-tbody" class="divide-y divide-slate-100 text-sm text-slate-700">
-                            <!-- Populated dynamically via Firestore onSnapshot -->
-                        </tbody>
-                    </table>
-                </div>
+            <div class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-600">
+                            <th class="p-4">NAMA SISWA</th>
+                            <th class="p-4">KELAS / ABSEN</th>
+                            <th class="p-4">SKOR KUIS</th>
+                            <th class="p-4">STATUS SERTIFIKAT</th>
+                            <th class="p-4 text-right">AKSI</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-siswa-body" class="text-sm divide-y divide-slate-100">
+                        <!-- Data dimasukkan via JS -->
+                    </tbody>
+                </table>
             </div>
-        </section>
+        </div>
 
     </main>
 
-    <!-- Login Modal -->
-    <div id="login-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hide">
-        <div class="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl space-y-6">
-            <div class="flex justify-between items-center border-b border-slate-100 pb-4">
-                <h3 class="font-bold text-lg text-slate-900">Identitas Siswa</h3>
-                <button onclick="app.closeLoginModal()" class="text-slate-400 hover:text-slate-600">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Lengkap Siswa</label>
-                    <input type="text" id="modal-username-input" placeholder="Contoh: Budi Santoso" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
-                </div>
-                <button onclick="app.saveUserProfile()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl text-sm font-semibold transition shadow-md shadow-indigo-100">
-                    Simpan & Mulai Belajar
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Custom Notification Box -->
-    <div id="notification-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hide">
-        <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center space-y-4">
-            <div id="notification-icon" class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto text-2xl">
-                <i class="fa-solid fa-circle-check"></i>
-            </div>
-            <h4 id="notification-title" class="font-bold text-lg text-slate-900">Berhasil!</h4>
-            <p id="notification-message" class="text-xs text-slate-600">Pesan notifikasi di sini.</p>
-            <button onclick="app.closeNotification()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-sm font-semibold transition">
-                OK
-            </button>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 space-y-1">
-        <p>Petualangan Matematika Kelas 5 Kurikulum Merdeka</p>
-        <p class="font-semibold text-indigo-600">Pengembang: Giga Inovation | 081329200985</p>
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
+        Petualangan Matematika Kelas 5 Kurikulum Merdeka<br>
+        Pengembang: <strong class="text-slate-700">Giga Inovation | 081329200985</strong>
     </footer>
 
-    <!-- Firebase SDK & Application Logic -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, query, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    <!-- LOGIKA JAVASCRIPT KUIS & DASHBOARD -->
+    <script>
+        // Database 50 Soal Lengkap
+        const databaseSoal = [
+            { bacaan: "Teks 1: Paman Doni memelihara ayam 64.050. Ayam siap dijual 48.395. Ayam mati 573.", t: "1. Lambang bilangan ayam Paman Doni yang siap dijual dibaca ....", opsi: ["Empat puluh delapan ribu tiga ratus sembilan puluh lima", "Empat delapan tiga sembilan lima", "Enam puluh empat ribu lima puluh", "Enam empat nol lima nol"], kunci: 0, tipe: "pg" },
+            { bacaan: "Teks 1: Paman Doni...", t: "2. Pada jumlah ayam 64.050, angka yang menunjukkan nilai tempat puluh ribuan adalah ....", opsi: ["6", "5", "4", "9"], kunci: 0, tipe: "pg" },
+            { bacaan: "Teks 1: Paman Doni...", t: "3. Jarak Boyolali ke Klaten delapan puluh satu ribu empat ratus meter. Ditulis dengan bilangan ....", opsi: ["81.040", "81.400", "71.040", "71.400"], kunci: 1, tipe: "pg" },
+            { bacaan: "Teks 1: Paman Doni...", t: "4. Angka 7 pada bilangan 35.728 menempati nilai ....", opsi: ["puluhan", "ratusan", "puluh ribuan", "ribuan"], kunci: 1, tipe: "pg" },
+            { bacaan: "Teks 1: Paman Doni...", t: "5. 76.594 ... 76.954. Tanda perbandingan yang tepat adalah ....", opsi: [">", "<", "=", "≥"], kunci: 1, tipe: "pg" },
+            { bacaan: "Teks 2: Uang saku Dayu, Siti, dan Tini.", t: "6. Urutan anak yang diberi uang saku paling sedikit hingga paling banyak adalah ....", opsi: ["Tini, Siti, Dayu", "Siti, Dayu, Tini", "Siti, Tini, Dayu", "Dayu, Tini, Siti"], kunci: 1, tipe: "pg" },
+            { bacaan: "Teks 2: Uang saku Dayu, Siti, dan Tini.", t: "7. Jumlah uang saku Tini (7 sepuluh ribuan, 5 seribuan, 8 seratusan) adalah ....", opsi: ["64.300", "75.800", "70.580", "48.500"], kunci: 1, tipe: "pg" },
+            { bacaan: "Teks 2: Uang saku Dayu, Siti, dan Tini.", t: "8. Selisih uang saku Siti dan Dayu adalah ....", opsi: ["15.800", "11.500", "112.800", "27.300"], kunci: 0, tipe: "pg" },
+            { bacaan: "Teks 3: Bola pingpong bernomor kelipatan 6 dan 4.", t: "9. Bola pingpong milik Diki (kelipatan 6 s.d. 36) yang dicat merah adalah ....", opsi: ["4, 8, 12, 16, 20, 24, 28, 32, 36", "1, 6, 12, 18, 24, 30, 36", "6, 12, 18, 24, 30, 36, 42", "6, 12, 18, 24, 30, 36"], kunci: 3, tipe: "pg" },
+            { bacaan: "Teks 3: Bola pingpong bernomor kelipatan 6 dan 4.", t: "10. Bola pingpong milik Diki dan Ari yang sama-sama dicat merah adalah ....", opsi: ["12, 24, dan 36", "8, 12, dan 24", "8, 12, 16, 24, dan 36", "12, 24, dan 26"], kunci: 0, tipe: "pg" },
+            { t: "11. Faktor persekutuan dari 12 dan 18 adalah ....", opsi: ["1, 2, 3, 4, dan 6", "1, 2, 3, dan 6", "2, 3, dan 6", "2, 3, 4, dan 6"], kunci: 1, tipe: "pg" },
+            { t: "12. Diantara bilangan berikut yang termasuk bilangan prima, kecuali ....", opsi: ["83", "87", "89", "97"], kunci: 1, tipe: "pg" },
+            { t: "13. Faktor prima dari 30 adalah ....", opsi: ["1, 2, 3, dan 5", "2, 3, dan 5", "1, 2, 3, 5, 6, 10, 15, dan 30", "3 dan 5"], kunci: 1, tipe: "pg" },
+            { t: "14. FPB dari 48 dan 60 adalah ....", opsi: ["4", "6", "12", "16"], kunci: 2, tipe: "pg" },
+            { t: "15. KPK dari 12 dan 20 adalah ....", opsi: ["4", "60", "120", "240"], kunci: 1, tipe: "pg" },
+            { t: "16. KPK dan FPB dari 42, 63, dan 84 adalah ....", opsi: ["240 dan 21", "252 dan 21", "254 dan 42", "256 dan 7"], kunci: 1, tipe: "pg" },
+            { t: "17. Pemasok beras setiap 7 hari, gas 12 hari. Tanggal 4 Agustus 2023 bersamaan. Bertemu lagi tanggal ....", opsi: ["30 September 2023", "19 Oktober 2023", "27 Oktober 2023", "4 November 2023"], kunci: 2, tipe: "pg" },
+            { t: "18. Kelas 5A bawa 48 roti, 5B bawa 60 roti. Dibagi ke keranjang sama banyak tanpa sisa. Jumlah roti terbanyak tiap keranjang adalah ....", opsi: ["6", "8", "10", "12"], kunci: 3, tipe: "pg" },
+            { t: "19. Pecahan yang senilai dengan dua potong piza, kecuali ....", opsi: ["1/4", "3/12", "4/16", "2/6"], kunci: 3, tipe: "pg" },
+            { t: "20. Pecahan yang menunjukkan daerah diarsir pada lingkaran adalah ....", opsi: ["5/12", "3/12", "1/2", "3/4"], kunci: 0, tipe: "pg" },
+            { t: "21. Tanda perbandingan yang tepat untuk 7/12 ... 8/13 adalah ....", opsi: ["=", ">", "<", "≤"], kunci: 2, tipe: "pg" },
+            { t: "22. Urutan pemilik potongan pita dari terpanjang ke terpendek (Didi 5 bagian, Vito 6 bagian, Reza 4 bagian) adalah ....", opsi: ["Reza, Didi, Vito", "Vito, Didi, Reza", "Reza, Vito, Didi", "Vito, Reza, Didi"], kunci: 0, tipe: "pg" },
+            { t: "23. Operasi pecahan yang hasilnya 4 5/9 adalah ....", opsi: ["1 4/9 + 2 1/9", "1 4/9 + 3 1/9", "3 4/9 + 1 1/9", "2 2/9 + 2 5/9"], kunci: 3, tipe: "pg" },
+            { t: "24. Hasil dari 11/12 - 5/8 adalah ....", opsi: ["7/24", "17/24", "6/4", "37/24"], kunci: 0, tipe: "pg" },
+            { t: "25. Ibu memiliki 1 1/2 liter minyak goreng, dipakai 3/5 liter. Sisa minyak ibu adalah ... liter.", opsi: ["6/10", "9/10", "1 2/3", "21/10"], kunci: 1, tipe: "pg" },
+            
+            // Isian Singkat (26-40)
+            { t: "26. Penduduk Desa Rukun Sentosa 32.416. Laki-laki 17.869. Lambang bilangan penduduk laki-laki ditulis ....", kunci: "17.869", tipe: "isian" },
+            { t: "27. Jeruk Rp19.500, Mangga Rp21.000, Apel Rp20.500. Buah paling mahal adalah ....", kunci: "mangga", tipe: "isian" },
+            { t: "28. Cantika punya uang sepuluh ribuan 4, seribuan 2, seratusan 7. Kolom ribuan bernilai ....", kunci: "0", tipe: "isian" },
+            { t: "29. Hasil dari 64.000 : 5 adalah ....", kunci: "12.800", tipe: "isian" },
+            { t: "30. Uang saku Hafiz Rp8.500 per hari. Total selama 6 hari adalah ....", kunci: "Rp51.000,00", tipe: "isian" },
+            { t: "31. Kelipatan 4 diantara 15 dan 25 adalah ....", kunci: "16, 20, 24", tipe: "isian" },
+            { t: "32. Faktor dari 20 adalah ....", kunci: "1, 2, 4, 5, 10, 20", tipe: "isian" },
+            { t: "33. Bilangan kelipatan 6 dan 7 diantara 40 dan 50 adalah ....", kunci: "42", tipe: "isian" },
+            { t: "34. KPK dari 30 dan 40 adalah ....", kunci: "120", tipe: "isian" },
+            { t: "35. FPB dari 75 dan 90 adalah ....", kunci: "15", tipe: "isian" },
+            { t: "36. Hasil dari 3/8 + 1/4 adalah ....", kunci: "5/8", tipe: "isian" },
+            { t: "37. Hasil dari 2 3/5 - 1 1/2 adalah ....", kunci: "1 1/10", tipe: "isian" },
+            { t: "38. Bentuk pecahan biasa dari 3 3/4 adalah ....", kunci: "15/4", tipe: "isian" },
+            { t: "39. Urutan pecahan terkecil ke terbesar dari 1/2, 3/4, 2/5 adalah ....", kunci: "2/5, 1/2, 3/4", tipe: "isian" },
+            { t: "40. Semangka dipotong 8 bagian, Andi makan 3 bagian. Sisa pecahan semangka adalah ....", kunci: "5/8", tipe: "isian" },
 
-        // Konfigurasi Firebase dari project Anda (coba / edumate5)
-        const firebaseConfig = {
-            apiKey: "AIzaSyDNAx-4AiIkAvg64OUDJ5lRrLAF6PrDUSE",
-            authDomain: "coba-67353.firebaseapp.com",
-            projectId: "coba-67353",
-            storageBucket: "coba-67353.appspot.com",
-            messagingSenderId: "300392096297",
-            appId: "1:300392096297:web:54fd41fba38f491d4a3238",
-            measurementId: "G-MPRPMQHZ6D"
-        };
-
-        const appId = 'edumate5-matematika-kelas-5';
-        let appInstance, db, auth, userId = null;
-        let studentsUnsubscribe = null;
-
-        try {
-            appInstance = initializeApp(firebaseConfig);
-            db = getFirestore(appInstance);
-            auth = getAuth(appInstance);
-        } catch(e) {
-            console.warn("Firebase initialization warning (running in offline/mock mode):", e);
-        }
-
-        // App Data Structure
-        const state = {
-            currentUser: localStorage.getItem('mat_student_name') || 'Siswa Kelas 5',
-            score: parseInt(localStorage.getItem('mat_student_score') || '0'),
-            completedModules: JSON.parse(localStorage.getItem('mat_completed_modules') || '[]'),
-            currentModuleId: null,
-            activeQuizCategory: null,
-            currentQuizQuestionIndex: 0,
-            quizScore: 0,
-            allStudentsData: []
-        };
-
-        // Course Modules Data
-        const modulesData = [
-            {
-                id: 'pecahan',
-                title: 'Bilangan Pecahan & Operasi Hitung',
-                icon: 'fa-calculator',
-                color: 'indigo',
-                description: 'Memahami penjumlahan, pengurangan, serta perkalian pecahan biasa dan campuran.',
-                content: `
-                    <h3 class="text-xl font-bold text-slate-900">Bab 1: Bilangan Pecahan</h3>
-                    <p>Pecahan adalah bagian dari keseluruhan. Ditulis dalam bentuk <strong>a/b</strong> di mana <em>a</em> adalah pembilang dan <em>b</em> adalah penyebut.</p>
-                    <h4 class="font-semibold text-slate-800 mt-4">1. Penjumlahan & Pengurangan Pecahan</h4>
-                    <p>Untuk menjumlahkan atau mengurangkan pecahan, penyebutnya harus disamakan terlebih dahulu menggunakan KPK dari penyebut.</p>
-                    <div class="bg-indigo-50 p-4 rounded-xl text-indigo-900 font-medium my-3">
-                        Contoh: 1/2 + 1/4 = 2/4 + 1/4 = 3/4
-                    </div>
-                `
-            },
-            {
-                id: 'volume',
-                title: 'Volume Bangun Ruang',
-                icon: 'fa-cube',
-                color: 'emerald',
-                description: 'Menghitung volume kubus dan balok menggunakan satuan kubus maupun rumus matematis.',
-                content: `
-                    <h3 class="text-xl font-bold text-slate-900">Bab 2: Volume Bangun Ruang</h3>
-                    <p>Volume adalah seberapa banyak ruang yang dapat ditempati oleh suatu objek tiga dimensi.</p>
-                    <h4 class="font-semibold text-slate-800 mt-4">1. Rumus Volume Kubus</h4>
-                    <p>Volume Kubus = <strong>s × s × s</strong> (s = sisi)</p>
-                    <h4 class="font-semibold text-slate-800 mt-4">2. Rumus Volume Balok</h4>
-                    <p>Volume Balok = <strong>panjang × lebar × tinggi</strong> (p × l × t)</p>
-                    <div class="bg-emerald-50 p-4 rounded-xl text-emerald-900 font-medium my-3">
-                        Contoh Balok (p=5cm, l=4cm, t=3cm): 5 × 4 × 3 = 60 cm³
-                    </div>
-                `
-            },
-            {
-                id: 'data',
-                title: 'Pengumpulan & Penyajian Data',
-                icon: 'fa-chart-pie',
-                color: 'violet',
-                description: 'Belajar membaca dan menyajikan data dalam bentuk tabel serta diagram batang.',
-                content: `
-                    <h3 class="text-xl font-bold text-slate-900">Bab 3: Data & Statistika</h3>
-                    <p>Data adalah keterangan yang diperoleh berdasarkan kenyataan. Data dapat disajikan dalam bentuk tabel, diagram batang, atau diagram garis.</p>
-                    <h4 class="font-semibold text-slate-800 mt-4">Membaca Diagram Batang</h4>
-                    <p>Sumbu mendatar (X) biasanya menunjukkan kategori, sedangkan sumbu tegak (Y) menunjukkan frekuensi atau jumlah.</p>
-                `
-            },
-            {
-                id: 'luas',
-                title: 'Luas Daerah Bangun Datar',
-                icon: 'fa-shapes',
-                color: 'amber',
-                description: 'Menghitung luas segitiga, jajar genjang, dan trapesium secara akurat.',
-                content: `
-                    <h3 class="text-xl font-bold text-slate-900">Bab 4: Luas Bangun Datar</h3>
-                    <p>Luas adalah besarnya wilayah yang dibatasi oleh sisi-sisi bangun datar.</p>
-                    <h4 class="font-semibold text-slate-800 mt-4">1. Luas Segitiga</h4>
-                    <p>Luas = <strong>1/2 × alas × tinggi</strong></p>
-                    <h4 class="font-semibold text-slate-800 mt-4">2. Luas Jajar Genjang</h4>
-                    <p>Luas = <strong>alas × tinggi</strong></p>
-                `
-            }
+            // Esai / Uraian (41-50)
+            { t: "41. Bu Fitri belanja Rp32.500 dibayar dengan pecahan 7 lembar sepuluh ribuan, 9 seribuan, 8 keping seratusan. Banyak lembar sepuluh ribuan yang dipakai adalah ....", kunci: "3", tipe: "isian" },
+            { t: "42. Warung Makmur: Reguler Rp26.500, Dobel Rp51.000. Apakah benar 2 porsi reguler lebih hemat dibanding paket dobel? (Jawab: benar / salah)", kunci: "salah", tipe: "isian" },
+            { t: "43. Siswa Kelas 5 25 orang, laki-laki 15. Jika dibagi kelompok belajar sama rata, banyak kelompok yang terbentuk adalah ....", kunci: "5", tipe: "isian" },
+            { t: "44. Bagas (4 hari sekali) dan Azam (3 hari sekali) latihan renang bersama tanggal 7 September 2023. Mereka bertemu lagi dalam ... hari.", kunci: "12", tipe: "isian" },
+            { t: "45. Tangki motor Yayan berisi 3 1/4 liter, tersisa 1 1/4 liter. Bahan bakar yang terpakai adalah ... liter.", kunci: "2", tipe: "isian" },
+            { t: "46. Lambang bilangan dari 'Dua puluh tujuh ribu empat ratus lima puluh' adalah ....", kunci: "27.450", tipe: "isian" },
+            { t: "47. Hasil dari 2 1/3 + 1 1/6 adalah ....", kunci: "3 1/2", tipe: "isian" },
+            { t: "48. Luas kebun persegi panjang dengan panjang 7/2 meter dan lebar 4/3 meter adalah ... m².", kunci: "4 2/3", tipe: "isian" },
+            { t: "49. Pecahan biasa dari 5 3/4 adalah ....", kunci: "23/4", tipe: "isian" },
+            { t: "50. Kantong berisi 3/4 kg gula, ditambah lagi 1/2 kg. Total berat gula sekarang adalah ... kg.", kunci: "1 1/4", tipe: "isian" }
         ];
 
-        // Quiz Question Banks
-        const quizBank = {
-            pecahan: [
-                { q: "Berapakah hasil dari 1/2 + 1/4?", options: ["2/4", "3/4", "2/6", "3/6"], correct: 1 },
-                { q: "Bentuk desimal dari 3/4 adalah...", options: ["0,25", "0,50", "0,75", "1,25"], correct: 2 },
-                { q: "Hasil dari 2/3 - 1/6 adalah...", options: ["1/2", "1/6", "3/9", "1/3"], correct: 0 },
-                { q: "Pecahan berikut yang senilai dengan 2/5 adalah...", options: ["4/10", "3/10", "4/8", "5/10"], correct: 0 },
-                { q: "Hasil perkalian 1/2 × 3/4 adalah...", options: ["3/8", "4/6", "2/6", "3/6"], correct: 0 }
-            ],
-            volume: [
-                { q: "Berapa volume kubus dengan panjang sisi 5 cm?", options: ["100 cm³", "125 cm³", "150 cm³", "25 cm³"], correct: 1 },
-                { q: "Sebuah balok memiliki panjang 10 cm, lebar 4 cm, dan tinggi 5 cm. Volumenya adalah...", options: ["100 cm³", "200 cm³", "150 cm³", "250 cm³"], correct: 1 },
-                { q: "Satuan baku untuk volume adalah...", options: ["cm", "cm²", "cm³", "liter"], correct: 2 },
-                { q: "Jika volume kubus 64 cm³, berapakah panjang sisinya?", options: ["3 cm", "4 cm", "5 cm", "6 cm"], correct: 1 },
-                { q: "Sebuah kotak berbentuk kubus sisinya 10 cm. Berapa ml air yang dapat ditampung (1 cm³ = 1 ml)?", options: ["100 ml", "500 ml", "1000 ml", "10000 ml"], correct: 2 }
-            ],
-            data: [
-                { q: "Diagram yang menggunakan gambar atau simbol untuk mewakili data disebut...", options: ["Diagram Batang", "Diagram Garis", "Diagram Gambar (Piktogram)", "Diagram Lingkaran"], correct: 2 },
-                { q: "Rata-rata (mean) dari nilai 80, 90, 70 adalah...", options: ["80", "85", "75", "90"], correct: 0 },
-                { q: "Sumbu vertikal pada diagram batang biasanya menyatakan...", options: ["Kategori", "Frekuensi/Jumlah", "Waktu", "Nama"], correct: 1 },
-                { q: "Data yang paling sering muncul dalam suatu kelompok data disebut...", options: ["Mean", "Median", "Modus", "Range"], correct: 2 },
-                { q: "Tabel frekuensi digunakan untuk...", options: ["Menghitung luas", "Menyajikan ringkasan data", "Mengukur volume", "Menggambar bangun"], correct: 1 }
-            ]
-        };
+        let idxSoal = 0;
+        let jawabanSiswa = new Array(databaseSoal.length).fill(null);
+        let currentSiswa = { nama: "", kelas: "", skor: 0 };
 
-        const app = {
-            async init() {
-                if (auth) {
-                    try {
-                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                            await signInWithCustomToken(auth, __initial_auth_token);
-                        } else {
-                            await signInAnonymously(auth);
-                        }
-                        userId = auth.currentUser?.uid || crypto.randomUUID();
-                        this.initFirestoreSync();
-                    } catch (e) {
-                        console.warn("Auth initialization fallback:", e);
-                        userId = crypto.randomUUID();
-                    }
-                } else {
-                    userId = crypto.randomUUID();
-                }
+        // Navigasi Antar Tab
+        function pindahTab(tabId) {
+            ['beranda', 'materi', 'kuis', 'sertifikat', 'dashboard'].forEach(id => {
+                document.getElementById(`tab-${id}`).classList.add('hidden');
+            });
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            if(tabId === 'dashboard') refreshDashboard();
+        }
 
-                this.renderModulesList();
-                this.updateUIState();
-                this.switchTab('home');
-            },
-
-            switchTab(tabId) {
-                document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hide'));
-                document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('bg-indigo-50', 'text-indigo-600'));
-                
-                const targetSec = document.getElementById(`view-${tabId}`);
-                if (targetSec) targetSec.classList.remove('hide');
-
-                const activeNavBtn = document.querySelector(`nav button[data-target="${tabId}"]`);
-                if (activeNavBtn) activeNavBtn.classList.add('bg-indigo-50', 'text-indigo-600');
-
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                if (tabId === 'teacher') {
-                    this.loadTeacherData();
-                }
-            },
-
-            updateUIState() {
-                document.getElementById('current-username-display').innerText = state.currentUser;
-                document.getElementById('user-score-display').innerText = state.score;
-                document.getElementById('modules-completed-counter').innerHTML = `<i class="fa-solid fa-check-circle mr-1.5"></i> Selesai: ${state.completedModules.length} / 4 Modul`;
-                
-                localStorage.setItem('mat_student_name', state.currentUser);
-                localStorage.setItem('mat_student_score', state.score);
-                localStorage.setItem('mat_completed_modules', JSON.stringify(state.completedModules));
-
-                this.syncDataToFirestore();
-            },
-
-            renderModulesList() {
-                const grid = document.getElementById('modules-grid');
-                grid.innerHTML = modulesData.map(mod => {
-                    const isCompleted = state.completedModules.includes(mod.id);
-                    return `
-                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition">
-                            <div>
-                                <div class="flex justify-between items-start mb-4">
-                                    <div class="w-12 h-12 bg-${mod.color}-50 text-${mod.color}-600 rounded-xl flex items-center justify-center">
-                                        <i class="fa-solid ${mod.icon} text-xl"></i>
-                                    </div>
-                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full ${isCompleted ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}">
-                                        ${isCompleted ? 'Selesai' : 'Belum'}
-                                    </span>
-                                </div>
-                                <h3 class="font-bold text-lg text-slate-900 mb-1">${mod.title}</h3>
-                                <p class="text-xs text-slate-500 mb-4">${mod.description}</p>
-                            </div>
-                            <button onclick="app.openModule('${mod.id}')" class="w-full bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-600 py-2.5 rounded-xl text-sm font-semibold transition">
-                                Pelajari Materi <i class="fa-solid fa-arrow-right ml-1"></i>
-                            </button>
-                        </div>
-                    `;
-                }).join('');
-            },
-
-            openModule(modId) {
-                const mod = modulesData.find(m => m.id === modId);
-                if (!mod) return;
-                state.currentModuleId = modId;
-                
-                document.getElementById('module-detail-content').innerHTML = mod.content;
-                const isCompleted = state.completedModules.includes(modId);
-                const badge = document.getElementById('module-status-badge');
-                const btn = document.getElementById('btn-complete-module');
-                
-                if (isCompleted) {
-                    badge.className = 'text-xs font-semibold px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700';
-                    badge.innerText = 'Selesai Dipelajari';
-                    btn.innerText = 'Sudah Selesai';
-                } else {
-                    badge.className = 'text-xs font-semibold px-3 py-1.5 rounded-xl bg-amber-50 text-amber-700';
-                    badge.innerText = 'Belum Selesai';
-                    btn.innerText = 'Tandai Selesai & Lanjut';
-                }
-
-                document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hide'));
-                document.getElementById('view-module-detail').classList.remove('hide');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            },
-
-            markModuleComplete() {
-                if (!state.completedModules.includes(state.currentModuleId)) {
-                    state.completedModules.push(state.currentModuleId);
-                    state.score += 25; // Bonus points for completing module
-                    this.updateUIState();
-                    this.renderModulesList();
-                    this.showNotification('Modul Selesai!', 'Selamat! Anda mendapatkan +25 poin.');
-                }
-                this.switchTab('modules');
-            },
-
-            startQuiz(category) {
-                state.activeQuizCategory = category;
-                state.currentQuizQuestionIndex = 0;
-                state.quizScore = 0;
-
-                document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hide'));
-                document.getElementById('view-active-quiz').classList.remove('hide');
-                this.renderQuizQuestion();
-            },
-
-            renderQuizQuestion() {
-                const questions = quizBank[state.activeQuizCategory];
-                const index = state.currentQuizQuestionIndex;
-                
-                if (index >= questions.length) {
-                    state.score += state.quizScore;
-                    this.updateUIState();
-                    this.showNotification('Kuis Selesai!', `Anda mendapatkan total ${state.quizScore} poin dari kuis ini!`);
-                    this.switchTab('games');
-                    return;
-                }
-
-                const qData = questions[index];
-                document.getElementById('quiz-category-badge').innerText = `Kuis ${state.activeQuizCategory.toUpperCase()}`;
-                document.getElementById('quiz-question-counter').innerText = `Soal ${index + 1} dari ${questions.length}`;
-                document.getElementById('quiz-question-text').innerText = qData.q;
-                document.getElementById('quiz-score-live').innerText = `Poin Diperoleh: ${state.quizScore}`;
-                document.getElementById('btn-next-question').classList.add('hide');
-
-                const container = document.getElementById('quiz-options-container');
-                container.innerHTML = qData.options.map((opt, i) => `
-                    <button onclick="app.answerQuiz(${i}, ${qData.correct})" class="quiz-option-btn w-full text-left p-4 rounded-xl border border-slate-200 hover:border-indigo-500 hover:bg-indigo-50 transition text-sm font-medium text-slate-700">
-                        ${String.fromCharCode(65 + i)}. ${opt}
-                    </button>
-                `).join('');
-            },
-
-            answerQuiz(selected, correct) {
-                const buttons = document.querySelectorAll('.quiz-option-btn');
-                buttons.forEach((btn, idx) => {
-                    btn.disabled = true;
-                    if (idx === correct) {
-                        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-800');
-                    } else if (idx === selected) {
-                        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-800');
-                    }
-                });
-
-                if (selected === correct) {
-                    state.quizScore += 20;
-                }
-
-                document.getElementById('btn-next-question').classList.remove('hide');
-            },
-
-            nextQuizQuestion() {
-                state.currentQuizQuestionIndex++;
-                this.renderQuizQuestion();
-            },
-
-            generateCertificate() {
-                document.getElementById('cert-student-name').innerText = state.currentUser;
-                const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                document.getElementById('cert-date').innerText = new Date().toLocaleDateString('id-ID', options);
-                this.showNotification('Sertifikat Siap!', 'Sertifikat kelulusan berhasil diperbarui dengan nama Anda.');
-            },
-
-            openLoginModal() {
-                document.getElementById('modal-username-input').value = state.currentUser;
-                document.getElementById('login-modal').classList.remove('hide');
-            },
-
-            closeLoginModal() {
-                document.getElementById('login-modal').classList.add('hide');
-            },
-
-            saveUserProfile() {
-                const val = document.getElementById('modal-username-input').value.trim();
-                if (val) {
-                    state.currentUser = val;
-                    this.updateUIState();
-                    this.closeLoginModal();
-                    this.showNotification('Profil Disimpan', `Selamat datang kembali, ${val}!`);
-                }
-            },
-
-            showNotification(title, msg) {
-                document.getElementById('notification-title').innerText = title;
-                document.getElementById('notification-message').innerText = msg;
-                document.getElementById('notification-modal').classList.remove('hide');
-            },
-
-            closeNotification() {
-                document.getElementById('notification-modal').classList.add('hide');
-            },
-
-            initFirestoreSync() {
-                if (!db || !userId) return;
-                try {
-                    const userDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students_progress', userId);
-                    setDoc(userDocRef, {
-                        name: state.currentUser,
-                        score: state.score,
-                        completedModules: state.completedModules,
-                        lastActive: new Date().toISOString()
-                    }, { merge: true });
-                } catch (e) {
-                    console.warn("Firestore sync initialization error:", e);
-                }
-            },
-
-            syncDataToFirestore() {
-                if (!db || !userId) return;
-                try {
-                    const userDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students_progress', userId);
-                    setDoc(userDocRef, {
-                        name: state.currentUser,
-                        score: state.score,
-                        completedModules: state.completedModules,
-                        lastActive: new Date().toISOString()
-                    }, { merge: true });
-                } catch (e) {
-                    console.warn("Firestore sync update error:", e);
-                }
-            },
-
-            loadTeacherData() {
-                const tbody = document.getElementById('teacher-students-tbody');
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="py-6 text-center text-slate-400">
-                            <i class="fa-solid fa-spinner fa-spin mr-2"></i> Memuat data siswa secara real-time...
-                        </td>
-                    </tr>
-                `;
-
-                if (!db) {
-                    tbody.innerHTML = `
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="py-3.5 px-4 font-semibold text-slate-900">${state.currentUser} (Anda)</td>
-                            <td class="py-3.5 px-4">${state.completedModules.length} / 4 Modul</td>
-                            <td class="py-3.5 px-4 font-semibold text-indigo-600">${state.score} Poin</td>
-                            <td class="py-3.5 px-4"><span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-medium">Aktif</span></td>
-                            <td class="py-3.5 px-4 text-right">
-                                <button onclick="app.switchTab('certificate')" class="text-indigo-600 hover:text-indigo-800 text-xs font-semibold">Lihat Sertifikat</button>
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-
-                try {
-                    if (studentsUnsubscribe) studentsUnsubscribe();
-                    const studentsCol = collection(db, 'artifacts', appId, 'public', 'data', 'students_progress');
-                    
-                    studentsUnsubscribe = onSnapshot(query(studentsCol), (snapshot) => {
-                        state.allStudentsData = [];
-                        snapshot.forEach(docSnap => {
-                            state.allStudentsData.push({ id: docSnap.id, ...docSnap.data() });
-                        });
-                        this.renderTeacherTable(state.allStudentsData);
-                    }, (error) => {
-                        console.warn("Firestore snapshot error:", error);
-                        tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-rose-500">Gagal memuat data dari database.</td></tr>`;
-                    });
-                } catch (e) {
-                    console.warn("Error setting up teacher snapshot:", e);
-                }
-            },
-
-            renderTeacherTable(data) {
-                const tbody = document.getElementById('teacher-students-tbody');
-                if (!data || data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400">Belum ada data siswa tercatat.</td></tr>`;
-                    return;
-                }
-
-                tbody.innerHTML = data.map(st => `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="py-3.5 px-4 font-semibold text-slate-900">${st.name || 'Siswa Tanpa Nama'}</td>
-                        <td class="py-3.5 px-4">${(st.completedModules || []).length} / 4 Modul</td>
-                        <td class="py-3.5 px-4 font-semibold text-indigo-600">${st.score || 0} Poin</td>
-                        <td class="py-3.5 px-4">
-                            <span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-medium">Tersedia</span>
-                        </td>
-                        <td class="py-3.5 px-4 text-right">
-                            <button onclick="app.switchTab('certificate')" class="text-indigo-600 hover:text-indigo-800 text-xs font-semibold">Lihat Sertifikat</button>
-                        </td>
-                    </tr>
-                `).join('');
-            },
-
-            filterStudents() {
-                const queryVal = document.getElementById('teacher-search-input').value.toLowerCase();
-                const filtered = state.allStudentsData.filter(st => (st.name || '').toLowerCase().includes(queryVal));
-                this.renderTeacherTable(filtered);
-            },
-
-            refreshTeacherData() {
-                this.loadTeacherData();
-                this.showNotification('Data Diperbarui', 'Data siswa berhasil disinkronkan ulang.');
+        // Mulai Kuis
+        function mulaiKuisAktif() {
+            let nama = document.getElementById('reg-nama').value.trim();
+            let kelas = document.getElementById('reg-kelas').value.trim();
+            if(!nama) {
+                alert("Silakan masukkan nama lengkapmu terlebih dahulu!");
+                return;
             }
-        };
+            currentSiswa.nama = nama;
+            currentSiswa.kelas = kelas || "Kelas 5";
+            
+            document.getElementById('lbl-nama-siswa').innerText = nama;
+            document.getElementById('kuis-reg').classList.add('hidden');
+            document.getElementById('kuis-main').classList.remove('hidden');
+            idxSoal = 0;
+            jawabanSiswa = new Array(databaseSoal.length).fill(null);
+            muatTampilanSoal();
+        }
 
-        window.app = app;
-        window.onload = () => {
-            app.init();
-        };
+        function muatTampilanSoal() {
+            let soal = databaseSoal[idxSoal];
+            document.getElementById('progress-soal').innerText = `Soal ${idxSoal + 1} dari ${databaseSoal.length}`;
+            document.getElementById('teks-soal').innerText = soal.t;
+
+            let bBox = document.getElementById('box-bacaan');
+            if(soal.bacaan) {
+                bBox.innerText = soal.bacaan;
+                bBox.classList.remove('hidden');
+            } else {
+                bBox.classList.add('hidden');
+            }
+
+            let container = document.getElementById('container-opsi');
+            container.innerHTML = "";
+
+            if(soal.tipe === 'pg') {
+                soal.opsi.forEach((opt, oIdx) => {
+                    let isChecked = jawabanSiswa[idxSoal] === oIdx ? 'border-indigo-500 bg-indigo-50/50' : 'border-slate-200 bg-white';
+                    let div = document.createElement('div');
+                    div.className = `flex items-center p-3 rounded-xl border ${isChecked} hover:border-indigo-300 cursor-pointer transition`;
+                    div.innerHTML = `
+                        <input type="radio" name="pilihan-opsi" id="opt-${oIdx}" value="${oIdx}" ${jawabanSiswa[idxSoal] === oIdx ? 'checked' : ''} class="w-4 h-4 text-indigo-600 focus:ring-indigo-500">
+                        <label for="opt-${oIdx}" class="ml-3 text-sm text-slate-700 w-full cursor-pointer">${String.fromCharCode(65 + oIdx)}. ${opt}</label>
+                    `;
+                    div.onclick = () => {
+                        jawabanSiswa[idxSoal] = oIdx;
+                        muatTampilanSoal();
+                    };
+                    container.appendChild(div);
+                });
+            } else {
+                let val = jawabanSiswa[idxSoal] || "";
+                let div = document.createElement('div');
+                div.innerHTML = `
+                    <input type="text" id="input-isian" value="${val}" placeholder="Ketik jawaban singkat di sini..." oninput="jawabanSiswa[idxSoal]=this.value.trim()" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:border-indigo-500 text-sm text-slate-800">
+                `;
+                container.appendChild(div);
+            }
+
+            document.getElementById('btn-prev').style.display = idxSoal === 0 ? 'none' : 'block';
+            let bNext = document.getElementById('btn-next');
+            if(idxSoal === databaseSoal.length - 1) {
+                bNext.innerText = "Selesai & Kumpulkan 🎯";
+            } else {
+                bNext.innerText = "Berikutnya →";
+            }
+        }
+
+        function soalNext() {
+            if(idxSoal < databaseSoal.length - 1) {
+                idxSoal++;
+                muatTampilanSoal();
+            } else {
+                selesaikanKuis();
+            }
+        }
+
+        function soalPrev() {
+            if(idxSoal > 0) {
+                idxSoal--;
+                muatTampilanSoal();
+            }
+        }
+
+        function selesaikanKuis() {
+            let totalSkor = 0;
+            databaseSoal.forEach((soal, i) => {
+                let jwb = jawabanSiswa[i];
+                if(jwb !== null && jwb !== "") {
+                    if(soal.tipe === 'pg') {
+                        if(Number(jwb) === soal.kunci) totalSkor += 2; // 50 soal * 2 = 100
+                    } else {
+                        if(String(jwb).toLowerCase() === String(soal.kunci).toLowerCase()) {
+                            totalSkor += 2;
+                        }
+                    }
+                }
+            });
+
+            currentSiswa.skor = totalSkor;
+            simpanKeDatabaseLokal(currentSiswa);
+
+            document.getElementById('kuis-main').classList.add('hidden');
+            document.getElementById('kuis-result').classList.remove('hidden');
+            document.getElementById('skor-akhir-val').innerText = totalSkor;
+
+            document.getElementById('cert-nama-siswa').innerText = currentSiswa.nama;
+            document.getElementById('cert-skor-val').innerText = totalSkor + " / 100";
+        }
+
+        // Penyimpanan Lokal Real-Time untuk Sinkronisasi Dashboard Guru
+        function simpanKeDatabaseLokal(siswa) {
+            let dataSiswa = JSON.parse(localStorage.getItem('giga_math_siswa') || '[]');
+            let existingIdx = dataSiswa.findIndex(s => s.nama.toLowerCase() === siswa.nama.toLowerCase());
+            if(existingIdx >= 0) {
+                dataSiswa[existingIdx] = siswa;
+            } else {
+                dataSiswa.push(siswa);
+            }
+            localStorage.setItem('giga_math_siswa', JSON.stringify(dataSiswa));
+        }
+
+        function refreshDashboard() {
+            let tbody = document.getElementById('tabel-siswa-body');
+            tbody.innerHTML = "";
+            let dataSiswa = JSON.parse(localStorage.getItem('giga_math_siswa') || '[]');
+            
+            if(dataSiswa.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400 text-sm">Belum ada data siswa yang menyelesaikan kuis.</td></tr>`;
+                return;
+            }
+
+            dataSiswa.forEach((s) => {
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition border-b border-slate-100";
+                tr.innerHTML = `
+                    <td class="p-4 font-semibold text-slate-800">${s.nama}</td>
+                    <td class="p-4 text-slate-600">${s.kelas}</td>
+                    <td class="p-4 font-bold text-indigo-600">${s.skor} Poin</td>
+                    <td class="p-4"><span class="px-2.5 py-1 bg-emerald-50 text-emerald-600 rounded-full text-xs font-semibold">Tersedia</span></td>
+                    <td class="p-4 text-right"><button onclick="bukaSertifikatSiswa('${s.nama}', ${s.skor})" class="text-indigo-600 hover:text-indigo-800 font-medium text-xs cursor-pointer">Lihat Sertifikat</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function bukaSertifikatSiswa(nama, skor) {
+            document.getElementById('cert-nama-siswa').innerText = nama;
+            document.getElementById('cert-skor-val').innerText = skor + " / 100";
+            pindahTab('sertifikat');
+        }
     </script>
 </body>
 </html>
